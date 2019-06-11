@@ -23,13 +23,13 @@
         </tr>
     </thead>
 
-    {% for story in user_stories %}
+    {% for question in user_questions %}
     <tr>
-        <td>{{ story['id'] }}</td>
-        <td>{{ story['submission_time'] }}</td>
-        <td>{{ story['view_number'] }}</td>
-        <td>{{ story['vote_number'] }}</td>
-        <td>{{ story['title'] }}</td>
+        <td>{{ question['id'] }}</td>
+        <td>{{ question['submission_time'] }}</td>
+        <td>{{ question['view_number'] }}</td>
+        <td>{{ question['vote_number'] }}</td>
+        <td>{{ question['title'] }}</td>
      </tr>
     {% endfor %}
 
