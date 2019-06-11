@@ -35,8 +35,8 @@ def add_question():
                            )
 
 
-@app.route('/story/<int:story_id>', methods=['GET', 'POST'])
-def story_update(story_id):
+@app.route('/question/<question_id>', methods=['GET', 'POST'])
+def view_question(question_id):
     if request.method == 'POST':
 
         if int(request.form.get('id')) != story_id:
