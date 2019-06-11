@@ -3,20 +3,26 @@ import os
 import uuid
 
 
-DATA_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'data.csv'
-DATA_HEADER = ['id', 'title', 'user_story', 'acceptance_criteria', 'business_value', 'estimation', 'status']
-STATUSES = ['planning', 'todo', 'in progress', 'review', 'done']
-DEFAULT_STATUS = 'planning'
+DATA_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'question.csv'
+DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
 
-def get_all_user_story(convert_linebreaks=False):
-    all_user_story = get_csv_data()
+def get_all_questions():
+    all_user_questions = get_csv_data()
 
-    if convert_linebreaks:
-        for user_story in all_user_story:
-            user_story['user_story'] = convert_linebreaks_to_br(user_story['user_story'])
-            user_story['acceptance_criteria'] = convert_linebreaks_to_br(user_story['acceptance_criteria'])
-    return all_user_story
+    return all_user_questions
+
+
+def get_csv_data():
+    user_questions = []
+    with open(DATA_FILE_PATH, encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+
+        for row in reader:
+            user_question = dict(row)
+
+            user_questions.append(user_question)
+    return  user_questions
 
 
 def get_user_story(story_id):
@@ -30,21 +36,6 @@ def get_next_id():
         return '1'
 
     return str(int(existing_data[-1]['id']) + 1)
-
-
-def get_csv_data(one_user_story_id=None):
-    user_stories = []
-    with open(DATA_FILE_PATH, encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-
-        for row in reader:
-            user_story = dict(row)
-
-            if one_user_story_id is not None and one_user_story_id == int(user_story['id']):
-                return user_story
-
-            user_stories.append(user_story)
-    return  user_stories
 
 
 def add_user_story(story):
