@@ -6,9 +6,9 @@
 
 {% block content %}
 
-<h1>Super Sprinter 3000</h1>
+<h1>Ask Mate</h1>
 <p>
-<a href="{{ url_for('add_story')}}">Add new User Story</a>
+<a href="{{ url_for('ask_question')}}">Ask new question</a>
 <br />
 </p>
 <div>
@@ -16,25 +16,21 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Story title</th>
-            <th>User Story</th>
-            <th>Acceptance criteria</th>
-            <th>Business Value</th>
-            <th>Estimation</th>
-            <th>Status</th>
+            <th>Submission Time</th>
+            <th>View number</th>
+            <th>Vote number</th>
+            <th>Title</th>
         </tr>
     </thead>
 
     {% for story in user_stories %}
     <tr>
         <td>{{ story['id'] }}</td>
-        <td> <a href="{{ url_for('story_update', story_id=story['id']) }}">{{ story['title'] }}</a> </td>
-        <td>{{ story['user_story'] }}</td>
-        <td>{{ story['acceptance_criteria'] }}</td>
-        <td>{{ story['business_value'] }}</td>
-        <td>{{ story['estimation'] }}</td>
-        <td>{{ story['status'] }}</td>
-    </tr>
+        <td>{{ story['submission_time'] }}</td>
+        <td>{{ story['view_number'] }}</td>
+        <td>{{ story['vote_number'] }}</td>
+        <td>{{ story['title'] }}</td>
+     </tr>
     {% endfor %}
 
 </table>
