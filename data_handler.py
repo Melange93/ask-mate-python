@@ -7,8 +7,12 @@ DATA_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ e
 DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
 
-def get_all_questions():
+def get_all_questions(convert_linebreaks=False):
     all_user_questions = get_csv_data()
+
+    if convert_linebreaks:
+        for question in all_user_questions:
+            question['message'] = convert_linebreaks_to_br(question['message'])
 
     return all_user_questions
 
@@ -26,7 +30,7 @@ def get_csv_data():
 
 
 def get_user_story(story_id):
-    return  get_csv_data(story_id)
+    return get_csv_data(story_id)
 
 
 def get_next_id():
