@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Welcome!
+{% endblock%}
+
+{% block content %}
+
+<h1>Super Sprinter 3000</h1>
+<p>
+<a href="{{ url_for('add_story')}}">Add new User Story</a>
+<br />
+</p>
+<div>
+<table class="center">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Story title</th>
+            <th>User Story</th>
+            <th>Acceptance criteria</th>
+            <th>Business Value</th>
+            <th>Estimation</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    {% for story in user_stories %}
+    <tr>
+        <td>{{ story['id'] }}</td>
+        <td> <a href="{{ url_for('story_update', story_id=story['id']) }}">{{ story['title'] }}</a> </td>
+        <td>{{ story['user_story'] }}</td>
+        <td>{{ story['acceptance_criteria'] }}</td>
+        <td>{{ story['business_value'] }}</td>
+        <td>{{ story['estimation'] }}</td>
+        <td>{{ story['status'] }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+</div>
+{% endblock%}
