@@ -23,13 +23,13 @@
         </tr>
     </thead>
 
-    {% for question in user_questions %}
+    {% for data in user_data %}
     <tr>
-        <td>{{ question['id'] }}</td>
-        <td>{{ question['submission_time'] }}</td>
-        <td>{{ question['view_number'] }}</td>
-        <td>{{ question['vote_number'] }}</td>
-        <td><a href="{{ url_for('view_question', question_id=question['id'])}}">{{ question['title'] }}</a></td>
+        <td>{{ data['id'] }}</td>
+        <td>{{ data['submission_time'] }}</td>
+        <td>{{ data['view_number'] }}</td>
+        <td>{{ data['vote_number'] }}</td>
+        <td><a href="{{ url_for('view_question', question_id=data['id'])}}">{{ data['title'] }}</a></td>
      </tr>
     {% endfor %}
 

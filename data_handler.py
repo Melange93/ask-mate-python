@@ -10,25 +10,25 @@ DATA_HEADER_ANSWERS  = ['id', 'submission_time', 'vote_number', 'question_id', '
 
 
 def get_all_data(convert_linebreaks=False):
-    all_user_questions = get_csv_data()
+    all_user_data = get_csv_data()
 
     if convert_linebreaks:
-        for question in all_user_questions:
+        for question in all_user_data:
             question['message'] = convert_linebreaks_to_br(question['message'])
 
-    return all_user_questions
+    return all_user_data
 
 
 def get_csv_data(needed_data):
-    user_questions = []
+    user_data = []
     with open(needed_data, encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
 
         for row in reader:
             user_question = dict(row)
 
-            user_questions.append(user_question)
-    return user_questions
+            user_data.append(user_question)
+    return user_data
 
 
 def get_user_story(story_id):
