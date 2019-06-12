@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+   {{page_title}}
+{% endblock%}
+
+{% block content %}
+<h1>{{ 'Edit ' + user_story.title if user_story else 'Ask new question' }}</h1>
+<form action="{{ url_for('story_update', story_id=user_story.id) if user_story else url_for('add_question') }}" method="post">
+    <input id="id" name="id" type="hidden" value="{{ user_story.id if user_story }}">
+
+    <label for="title"> Title: </label> <br />
+    <input name="title" type="text" id="title" minlength="8" value="{{ user_story.title if user_story }}"required/> <br />
+
+    <label for="message"> Message: </label> <br />
+    <textarea name="message" id="message" rows="8" cols="70" required>{{ user_story.acceptance_criteria if user_story}}</textarea><br />
+
+    <input type="submit" value="{{ button_title }}" />
+</form>
+{% endblock %}

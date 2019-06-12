@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 
+
 import data_handler
 import util
 
@@ -18,20 +19,21 @@ def route_list():
 @app.route('/ask-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        user_story = {
-            'title' : request.form.get('title'),
-            'user_story': request.form.get('user_story'),
-            'acceptance_criteria': request.form.get('acceptance_criteria'),
-            'business_value': request.form.get('business_value') + " point",
-            'estimation': request.form.get('estimation') + "h"
+        question = {
+            'id': request.form.get('id'),
+            'submission_time': util.get_current_timestamp(),
+            'view_number': '0',
+            'vote_number': '0',
+            'title': request.form.get('title'),
+            'message': request.form.get('message')
             }
-        data_handler.add_user_story(user_story)
-        return redirect('/')
+        data_handler.add_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+        return redirect('/list')
 
-    return render_template('story.html',
-                           form_url=url_for('add_story'),
-                           page_title='Add User Story',
-                           button_title='Add new User Story',
+    return render_template('questions.html',
+                           form_url=url_for('add_question'),
+                           page_title='Ask new question',
+                           button_title='Add new question',
                            )
 
 

@@ -35,24 +35,17 @@ def get_user_story(story_id):
     return get_csv_data(story_id)
 
 
-def get_next_id():
-    key = util.key_generator()
-    return key
+def add_user_data(data, needed_data, matching_header):
+    data['id'] = util.key_generator()
+    add_new_data_to_file(data, needed_data, matching_header, True)
 
 
-def add_user_story(story):
-    story['id'] = get_next_id()
-    story['status'] = DEFAULT_STATUS
-
-    add_new_data_to_file(story, True)
-
-
-def update_user_story(story):
-    add_new_data_to_file(story, False)
+def update_user_data(data):
+    add_new_data_to_file(data, False)
 
 
 def add_new_data_to_file(story, needed_data, matching_header, append=True):
-    existing_data = get_all_data()
+    existing_data = get_all_data(needed_data)
 
     with open(needed_data, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=matching_header)
