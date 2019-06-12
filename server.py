@@ -37,37 +37,21 @@ def add_question():
                            )
 
 
-@app.route('/question/<question_id>', methods=['GET', 'POST'])
-def view_question(question_id):
-    if request.method == 'POST':
+@app.route('/question/<string:question_id>', methods=['GET'])
+def view_question(question_id=None):
+    user_answers = data_handler.get_all_data(data_handler.DATA_FILE_PATH_ANSWERS, convert_linebreaks=True)
+    user_questions = data_handler.get_all_data(data_handler.DATA_FILE_PATH_QUESTIONS, convert_linebreaks=True)
+    user_questions = util.from_timestamp_datetime(user_questions)
+    for question in user_questions:
+        if question['id'] == question_id:
+            answers = []
+            for answer in user_answers:
+                if question['id'] == answer['question_id']:
+                    answers.append(answer)
+            return render_template('question.html',question=question,
+                                    answers=answers)
+    return redirect('/list')
 
-        if int(request.form.get('id')) != story_id:
-            raise ValueError('The recieved ID is not valid!')
-
-        user_story = {
-            'id': story_id,
-            'title': request.form.get('title'),
-            'user_story': request.form.get('user_story'),
-            'acceptance_criteria': request.form.get('acceptance_criteria'),
-            'business_value': request.form.get('business_value') + " point",
-            'estimation': request.form.get('estimation') + "h",
-            'status': request.form.get('status')
-        }
-
-        data_handler.update_user_story(user_story)
-        return redirect('/')
-
-    # user_story = data_handler.get_user_story(story_id)
-
-    user_story = data_handler.get_csv_data(story_id)
-    return render_template('story.html',
-                           form_url=url_for('add_story'),
-                           page_title='Edit User Story',
-                           button_title='Edit User Story',
-                           user_story=user_story,
-                           statuses=data_handler.STATUSES,
-                           selected_status=user_story['status']
-                           )
 
 
 if __name__ == '__main__':
