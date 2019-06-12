@@ -8,7 +8,7 @@ DATA_HEADER_QUESTIONS  = ['id', 'submission_time', 'view_number', 'vote_number',
 DATA_HEADER_ANSWERS  = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-def get_all_questions(convert_linebreaks=False):
+def get_all_data(convert_linebreaks=False):
     all_user_questions = get_csv_data()
 
     if convert_linebreaks:
@@ -35,7 +35,7 @@ def get_user_story(story_id):
 
 
 def get_next_id():
-    existing_data = get_all_questions()
+    existing_data = get_all_data()
 
     if len(existing_data) == 0:
         return '1'
