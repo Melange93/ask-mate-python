@@ -19,16 +19,15 @@
             <th>Submission Time</th>
             <th>View number</th>
             <th>Vote number</th>
-            
         </tr>
     </thead>
 
-    {% for data in user_data %}
+    {% for question in user_questions %}
     <tr>
-        <td><a href="{{ url_for('view_question', question_id=data['id'])}}">{{ data['title'] }}</a></td>
-        <td>{{ data['submission_time'] }}</td>
-        <td>{{ data['view_number'] }}</td>
-        <td>{{ data['vote_number'] }}</td>
+        <td><a href="{{ url_for('view_question', question_id=question['id'])}}">{{ question['title'] }}</a></td>
+        <td>{{ question['submission_time'] }}</td>
+        <td>{{ question['view_number'] }}</td>
+        <td>{{ question['vote_number'] }}</td>
     </tr>
     {% endfor %}
 

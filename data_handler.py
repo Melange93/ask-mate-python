@@ -9,8 +9,8 @@ DATA_HEADER_QUESTIONS = ['id', 'submission_time', 'view_number', 'vote_number', 
 DATA_HEADER_ANSWERS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-def get_all_data(convert_linebreaks=False):
-    all_user_data = get_csv_data()
+def get_all_data(needed_data, convert_linebreaks=False):
+    all_user_data = get_csv_data(needed_data)
 
     if convert_linebreaks:
         for question in all_user_data:

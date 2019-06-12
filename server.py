@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/list')
 def route_list():
-    user_questions = data_handler.get_all_questions(convert_linebreaks=True)
+    user_questions = data_handler.get_all_questions(data_handler.DATA_FILE_PATH_QUESTIONS, convert_linebreaks=True)
     sorted(user_questions, key=lambda question: question['submission_time'], reverse=True)
     user_questions = util.from_timestamp_datetime(user_questions)
     return render_template('list.html', user_questions=user_questions)
