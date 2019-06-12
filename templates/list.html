@@ -15,22 +15,21 @@
 <table class="center">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Title</th>
             <th>Submission Time</th>
             <th>View number</th>
             <th>Vote number</th>
-            <th>Title</th>
+            
         </tr>
     </thead>
 
     {% for data in user_data %}
     <tr>
-        <td>{{ data['id'] }}</td>
+        <td><a href="{{ url_for('view_question', question_id=data['id'])}}">{{ data['title'] }}</a></td>
         <td>{{ data['submission_time'] }}</td>
         <td>{{ data['view_number'] }}</td>
         <td>{{ data['vote_number'] }}</td>
-        <td><a href="{{ url_for('view_question', question_id=data['id'])}}">{{ data['title'] }}</a></td>
-     </tr>
+    </tr>
     {% endfor %}
 
 </table>
