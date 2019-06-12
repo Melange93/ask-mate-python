@@ -1,5 +1,6 @@
 import csv
 import os
+import util
 
 
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'question.csv'
@@ -35,12 +36,8 @@ def get_user_story(story_id):
 
 
 def get_next_id():
-    existing_data = get_all_data()
-
-    if len(existing_data) == 0:
-        return '1'
-
-    return str(int(existing_data[-1]['id']) + 1)
+    key = util.key_generator()
+    return key
 
 
 def add_user_story(story):
