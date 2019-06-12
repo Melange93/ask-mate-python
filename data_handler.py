@@ -44,15 +44,15 @@ def add_user_story(story):
     story['id'] = get_next_id()
     story['status'] = DEFAULT_STATUS
 
-    add_user_story_to_file(story, True)
+    add_new_data_to_file(story, True)
 
 
 def update_user_story(story):
-    add_user_story_to_file(story, False)
+    add_new_data_to_file(story, False)
 
 
-def add_user_story_to_file(story, needed_data, matching_header, append=True):
-    existing_data = get_all_questions()
+def add_new_data_to_file(story, needed_data, matching_header, append=True):
+    existing_data = get_all_data()
 
     with open(needed_data, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=matching_header)
@@ -72,4 +72,3 @@ def add_user_story_to_file(story, needed_data, matching_header, append=True):
 
 def convert_linebreaks_to_br(original_str):
     return "<br>".join(original_str.split('\n'))
-
