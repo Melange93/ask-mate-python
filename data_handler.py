@@ -71,3 +71,18 @@ def add_user_story_to_file(story, append=True):
 def convert_linebreaks_to_br(original_str):
     return "<br>".join(original_str.split('\n'))
 
+
+
+"""
+def write_table_to_file(file_name, table):
+    with open(file_name, "w") as file:
+        for record in table:
+            row = ','.join(record)
+            file.write(row + "\n")
+
+def get_table_from_file(file_name):
+    with open(file_name, "r") as file:
+        lines = file.readlines()
+    table = [element.replace("\n", "").split(",") for element in lines]
+    return table
+"""
