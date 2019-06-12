@@ -1,5 +1,6 @@
 import datetime
 import uuid
+import time
 
 
 def from_timestamp_datetime(user_questions):
@@ -12,3 +13,7 @@ def key_generator():
     key = uuid.uuid4().hex
     return key
 
+
+def get_current_timestamp():
+    timestamp = time.time()
+    return round(timestamp)
