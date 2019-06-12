@@ -1,21 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for
 
 import data_handler
+import util
 
 
 app = Flask(__name__)
 
 
-
-@app.route('/')
 @app.route('/list')
 def route_list():
-    user_questions = data_handler.get_all_questions()
+    user_questions = data_handler.get_all_data(data_handler.DATA_FILE_PATH_QUESTIONS, convert_linebreaks=True)
+    sorted(user_questions, key=lambda question: question['submission_time'], reverse=True)
+    user_questions = util.from_timestamp_datetime(user_questions)
     return render_template('list.html', user_questions=user_questions)
 
 
-@app.route('/story', methods=['GET', 'POST'])
-def add_story():
+@app.route('/ask-question', methods=['GET', 'POST'])
+def add_question():
     if request.method == 'POST':
         user_story = {
             'title' : request.form.get('title'),
@@ -34,8 +35,8 @@ def add_story():
                            )
 
 
-@app.route('/story/<int:story_id>', methods=['GET', 'POST'])
-def story_update(story_id):
+@app.route('/question/<question_id>', methods=['GET', 'POST'])
+def view_question(question_id):
     if request.method == 'POST':
 
         if int(request.form.get('id')) != story_id:

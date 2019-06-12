@@ -1,11 +1,19 @@
-def write_table_to_file(file_name, table):
-    with open(file_name, "w") as file:
-        for record in table:
-            row = ','.join(record)
-            file.write(row + "\n")
+import datetime
+import uuid
+import time
 
-def get_table_from_file(file_name):
-    with open(file_name, "r") as file:
-        lines = file.readlines()
-    table = [element.replace("\n", "").split(",") for element in lines]
-    return table
+
+def from_timestamp_datetime(user_questions):
+    for question in user_questions:
+        question['submission_time'] = datetime.datetime.fromtimestamp(int(question['submission_time'])).strftime('%Y-%m-%d %H:%M:%S')
+    return user_questions
+
+
+def key_generator():
+    key = uuid.uuid4().hex
+    return key
+
+
+def get_current_timestamp():
+    timestamp = time.time()
+    return round(timestamp)
