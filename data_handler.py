@@ -1,10 +1,11 @@
 import csv
 import os
-import uuid
 
 
-DATA_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'question.csv'
-DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'question.csv'
+DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'question.csv'
+DATA_HEADER_QUESTIONS  = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+DATA_HEADER_ANSWERS  = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 def get_all_questions(convert_linebreaks=False):
@@ -17,16 +18,16 @@ def get_all_questions(convert_linebreaks=False):
     return all_user_questions
 
 
-def get_csv_data():
+def get_csv_data(needed_data):
     user_questions = []
-    with open(DATA_FILE_PATH, encoding='utf-8') as csvfile:
+    with open(needed_data, encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
 
         for row in reader:
             user_question = dict(row)
 
             user_questions.append(user_question)
-    return  user_questions
+    return user_questions
 
 
 def get_user_story(story_id):
@@ -34,7 +35,7 @@ def get_user_story(story_id):
 
 
 def get_next_id():
-    existing_data = get_all_user_story()
+    existing_data = get_all_questions()
 
     if len(existing_data) == 0:
         return '1'
@@ -53,11 +54,11 @@ def update_user_story(story):
     add_user_story_to_file(story, False)
 
 
-def add_user_story_to_file(story, append=True):
-    existing_data = get_all_user_story()
+def add_user_story_to_file(story, needed_data, matching_header, append=True):
+    existing_data = get_all_questions()
 
-    with open(DATA_FILE_PATH, 'w', newline='', encoding='utf-8') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=DATA_HEADER)
+    with open(needed_data, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=matching_header)
         writer.writeheader()
 
         for row in existing_data:
