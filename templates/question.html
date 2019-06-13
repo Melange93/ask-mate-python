@@ -36,6 +36,13 @@
     <br>
     <h2>Answer:</h2>
     <br>
+    <p>
+        <a href="{{ url_for('new_answer', question_id=question['id']) }}">
+            Add a new answer
+        </a>
+    </p>
+    <br>
+
     <table class="center">
         <thead>
             <tr>
@@ -55,5 +62,9 @@
             </tr>
         {% endfor %}
     </table>
-
+    <br>
+    <form action="{{ url_for('route_list') }}">
+        <button type="submit"> Return </button>
+    </form>
+    <br>
 {% endblock%}

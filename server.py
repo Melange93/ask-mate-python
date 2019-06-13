@@ -50,10 +50,26 @@ def view_question(question_id=None):
             for answer in user_answers:
                 if question['id'] == answer['question_id']:
                     answers.append(answer)
-            return render_template('question.html',question=question,
+            return render_template('question.html', question=question,
                                     answers=answers)
+
     return redirect('/list')
 
+@app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
+def new_answer(question_id=None):
+    if request.method == 'POST':
+        answer = {
+            'id': request.form.get('id'),
+            'submission_time': util.get_current_timestamp(),
+            'vote_number': '0',
+            'question_id': question_id,
+            'message': request.form.get('message')
+            }
+        data_handler.add_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+        return redirect( url_for('view_question', question_id=question_id))
+        #redirect('/question/<question_id>')
+
+    return render_template('new-answer.html', question_id=question_id)
 
 
 if __name__ == '__main__':
