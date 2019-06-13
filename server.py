@@ -40,8 +40,10 @@ def add_question():
 @app.route('/question/<string:question_id>', methods=['GET'])
 def view_question(question_id=None):
     user_answers = data_handler.get_all_data(data_handler.DATA_FILE_PATH_ANSWERS, convert_linebreaks=True)
+    user_answers = util.from_timestamp_datetime(user_answers)
     user_questions = data_handler.get_all_data(data_handler.DATA_FILE_PATH_QUESTIONS, convert_linebreaks=True)
     user_questions = util.from_timestamp_datetime(user_questions)
+
     for question in user_questions:
         if question['id'] == question_id:
             answers = []
