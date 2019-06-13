@@ -71,6 +71,33 @@ def new_answer(question_id=None):
 
     return render_template('new-answer.html', question_id=question_id)
 
+@app.route('/question/<string:question_id>/edit', methods=['GET', 'POST'])
+def edit_question(question_id):
+    if request.method == 'POST':
+        question = {
+            'id': request.form.get('id'),
+            'submission_time': request.form.get('submission_time'),
+            'view_number': request.form.get('view_number'),
+            'vote_number': request.form.get('vote_number'),
+            'title': request.form.get('title'),
+            'message': request.form.get('message')
+            }
+        data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+        return redirect('/question/<question_id>')
+
+    all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
+    for selected_question in all_questions:
+        if selected_question['id'] == question_id:
+            question = selected_question
+            break
+
+    return render_template('questions.html',
+                           page_title='Edit question',
+                           button_title='Edit question',
+                           question=question,
+                           question_id=question_id
+                           )
+
 
 if __name__ == '__main__':
     app.run(
