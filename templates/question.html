@@ -29,12 +29,22 @@
             <td>{{ question['vote_number'] }}</td>
             <td>{{ question['message'] }}</td>
             <td>{{ question['image'] }}</td>
+            <td>
+                 <form action="{{ url_for('upvote_question', question_id=question.id)}}" method="post">
+                    <input type="submit" value="Upvote" />
+                 </form>
+            </td>
+            <td>
+                 <form action="{{ url_for('downvote_question', question_id=question.id)}}" method="post">
+                    <input type="submit" value="Downvote" />
+                 </form>
+            </td>
         </tr>
 
     </table>
+
     <p>
         <a href="{{ url_for('edit_question', question_id=question.id)}}">Edit question</a>
-    <br />
     </p>
     <br>
     <h2>Answer:</h2>
@@ -62,6 +72,16 @@
                 <td>{{ answer['submission_time'] }}</td>
                 <td>{{ answer['vote_number'] }}</td>
                 <td>{{ answer['image'] }}</td>
+                <td>
+                     <form action="{{ url_for('upvote_answer', answer_id=answer.id)}}" method="post">
+                        <input type="submit" value="Upvote" />
+                     </form>
+                </td>
+                <td>
+                     <form action="{{ url_for('downvote_answer', answer_id=answer.id)}}"method="post">
+                        <input type="submit" value="Downvote" />
+                     </form>
+                </td>
             </tr>
         {% endfor %}
     </table>

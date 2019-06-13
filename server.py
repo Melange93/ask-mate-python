@@ -1,6 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-
-
 import data_handler
 import util
 
@@ -29,7 +27,7 @@ def add_question():
             }
         data_handler.add_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
         question_id = question['id']
-        return redirect( url_for('view_question', question_id=question_id))
+        return redirect(url_for('view_question', question_id=question_id))
 
     return render_template('questions.html',
                            form_url=url_for('add_question'),
@@ -56,6 +54,7 @@ def view_question(question_id=None):
 
     return redirect('/list')
 
+
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id=None):
     if request.method == 'POST':
@@ -71,6 +70,7 @@ def new_answer(question_id=None):
         #redirect('/question/<question_id>')
 
     return render_template('new-answer.html', question_id=question_id)
+
 
 @app.route('/question/<string:question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
@@ -98,6 +98,68 @@ def edit_question(question_id):
                            question=question,
                            question_id=question_id
                            )
+
+
+@app.route('/question/<question_id>/vote-up', methods=['GET', 'POST'])
+def upvote_question(question_id):
+    if request.method == 'POST':
+        all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
+        for selected_question in all_questions:
+            if selected_question['id'] == question_id:
+                question = selected_question
+                break
+        number_question = int(question['vote_number'])
+        number_question += 1
+        question['vote_number'] = str(number_question)
+        data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+        return redirect(url_for('view_question', question_id=question_id))
+
+
+@app.route('/question/<question_id>/vote-down', methods=['GET', 'POST'])
+def downvote_question(question_id):
+    if request.method == 'POST':
+        all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
+        for selected_question in all_questions:
+            if selected_question['id'] == question_id:
+                question = selected_question
+                break
+        number_question = int(question['vote_number'])
+        number_question -= 1
+        question['vote_number'] = str(number_question)
+        data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+        return redirect(url_for('view_question', question_id=question_id))
+
+
+@app.route('/answer/<answer_id>/vote-up', methods=['GET', 'POST'])
+def upvote_answer(answer_id):
+    if request.method == 'POST':
+        all_answer = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_ANSWERS)
+        for selected_answer in all_answer:
+            if selected_answer['id'] == answer_id:
+                answer = selected_answer
+                break
+        number_answer = int(answer['vote_number'])
+        number_answer += 1
+        answer['vote_number'] = str(number_answer)
+        data_handler.update_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+        question_id = answer['question_id']
+        return redirect(url_for('view_question', question_id=question_id))
+
+
+@app.route('/answer/<answer_id>/vote-down', methods=['GET', 'POST'])
+def downvote_answer(answer_id):
+    if request.method == 'POST':
+        all_answer = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_ANSWERS)
+        for selected_answer in all_answer:
+            if selected_answer['id'] == answer_id:
+                answer = selected_answer
+                break
+        number_answer = int(answer['vote_number'])
+        number_answer -= 1
+        answer['vote_number'] = str(number_answer)
+        data_handler.update_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+        question_id = answer['question_id']
+        return redirect(url_for('view_question', question_id=question_id))
 
 
 if __name__ == '__main__':
