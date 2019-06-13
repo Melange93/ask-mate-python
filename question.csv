@@ -1,5 +1,5 @@
 id,submission_time,view_number,vote_number,title,message,image
-0,1493388124,10,10,How to make lists in Python?,"ysdfg totally new to this, qwerwer",
+0,1493368154,29,7,How to make lists in Python?,"I am totally new to this, any hints?",
 1,1493068124,15,9,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
@@ -12,5 +12,17 @@ app.js (bundled file with webpack, including jquery)",images/image1.png
 2,1493015432,1364,57,Drawing canvas with an image picked with Cordova Camera Plugin,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
 
 This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)",
+<<<<<<< HEAD
 21754eca1ede45389f1a30453577c6c7,1560426391,0,0,sdfasdfas,dsfdsfadsfsdf,
 c73f6f2ec3514c0d9ed1d80a2cc746ba,1560426594,0,0,SDfsdfdfdfd,Ydfhfhjkuki,
+=======
+04b5d10a86324f76b3e8e75f7da6ad59,1560338507,0,0,new question,hello,
+749ab38351dd414db9ac41ab3707ba3a,1560341009,0,0,lolasdasd,looooooooooooolasdasdasd,
+c975de8160494bf2999c0e64bc48209d,1560417545,0,0,Gimmeasdasd,lolasd,
+f5dff779d68442d5ba43a330ce5c49c8,1560417576,0,0,yxdfasdgsd,aeszrj,
+d3d06d738f9a48abbae374235440dfe1,1560418167,0,0,Consuela ,No senior lolasd nem lenni itt,
+f025d41f961f4b2a9d205179c78b6599,1560423881,0,0,,Lolasdasdasd,
+cdb761d3508d4642ab449d156bf3ab63,1560423896,0,0,,"Lolasdasdasdasd
+",
+7b2a7ef8848047319b75b6150dcde0ac,1560424047,0,0,,asdasdasd,
+>>>>>>> aceee0970b86f5e40cc2d387820dc0f55b9ac529
