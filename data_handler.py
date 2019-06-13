@@ -40,8 +40,8 @@ def add_user_data(data, needed_data, matching_header):
     add_new_data_to_file(data, needed_data, matching_header, True)
 
 
-def update_user_data(data):
-    add_new_data_to_file(data, False)
+def update_user_data(data, needed_data, matching_header):
+    add_new_data_to_file(data, needed_data, matching_header, False)
 
 
 def add_new_data_to_file(story, needed_data, matching_header, append=True):
@@ -54,7 +54,7 @@ def add_new_data_to_file(story, needed_data, matching_header, append=True):
         for row in existing_data:
 
             if not append:
-                if int(row['id']) == story['id']:
+                if (row['id']) == story['id']:
                     row = story
 
             writer.writerow(row)
