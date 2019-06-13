@@ -36,7 +36,6 @@ def get_user_story(story_id):
 
 
 def add_user_data(data, needed_data, matching_header):
-    data['id'] = util.key_generator()
     add_new_data_to_file(data, needed_data, matching_header, True)
 
 
