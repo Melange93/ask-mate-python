@@ -172,14 +172,9 @@ def del_record(question_id):
                 pass
 
         data_handler.delete_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
-        '''
-        all_answer = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_ANSWERS)
-        for selected_answer in all_answer:
-            if selected_answer['question_id'] == question_id:
-                pass
 
-        data_handler.delete_data(selected_answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS, True)
-        '''
+        data_handler.delete_data(question, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS, True)
+
         return redirect('/list')
 
 

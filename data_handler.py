@@ -63,28 +63,30 @@ def add_new_data_to_file(story, needed_data, matching_header, append=True):
 
 
 def delete_data(story, needed_data, matching_header, answer=False):
-    existing_data = get_all_data(needed_data)
+    if not answer:
+        existing_data = get_all_data(needed_data)
 
-    with open(needed_data, 'w', newline='', encoding='utf-8') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=matching_header)
-        writer.writeheader()
-        if not answer:
+        with open(needed_data, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=matching_header)
+            writer.writeheader()
+
             for row in existing_data:
                 if (row['id']) == story['id']:
                     pass
                 else:
                     writer.writerow(row)
-            '''
-            existing_data = get_all_data(needed_data)
+    if answer:
+        existing_data = get_all_data(needed_data)
 
-            with open(needed_data, 'w', newline='', encoding='utf-8') as csvfile:
-                writer = csv.DictWriter(csvfile, fieldnames=matching_header)
-                writer.writeheader()
-                for row in existing_data:
-                    if (row['question_id']) == story['id']:
-                        pass
-                    else:
-                        writer.writerow(row)
-            '''
+        with open(needed_data, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=matching_header)
+            writer.writeheader()
+            for row in existing_data:
+                if (row['question_id']) == story['id']:
+                    pass
+                else:
+                    writer.writerow(row)
+
+
 def convert_linebreaks_to_br(original_str):
     return "<br>".join(original_str.split('\n'))
