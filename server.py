@@ -67,7 +67,6 @@ def new_answer(question_id=None):
             }
         data_handler.add_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
         return redirect( url_for('view_question', question_id=question_id))
-        #redirect('/question/<question_id>')
 
     return render_template('new-answer.html', question_id=question_id)
 
@@ -84,7 +83,7 @@ def edit_question(question_id):
             'message': request.form.get('message')
             }
         data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
-        return redirect('/question/<question_id>')
+        return redirect( url_for('view_question', question_id=question_id))
 
     all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
     for selected_question in all_questions:
