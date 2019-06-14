@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/list')
 def route_list():
     user_questions = data_handler.get_all_data(data_handler.DATA_FILE_PATH_QUESTIONS, convert_linebreaks=True)
-    sorted(user_questions, key=lambda question: question['submission_time'], reverse=True)
+    user_questions.sort(key=lambda question: question['submission_time'], reverse=True)
     user_questions = util.from_timestamp_datetime(user_questions)
     return render_template('list.html', user_questions=user_questions)
 
@@ -59,7 +59,7 @@ def view_question(question_id=None):
 def new_answer(question_id=None):
     if request.method == 'POST':
         answer = {
-            'id': request.form.get('id'),
+            'id': util.key_generator(),
             'submission_time': util.get_current_timestamp(),
             'vote_number': '0',
             'question_id': question_id,
