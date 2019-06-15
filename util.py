@@ -58,6 +58,22 @@ def new_answer(question_id):
     data_handler.add_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
     return answer
 
+
+def show_question(question_id):
+    user_answers = data_handler.get_all_data(data_handler.DATA_FILE_PATH_ANSWERS, convert_linebreaks=True)
+    user_answers = from_timestamp_datetime(user_answers)
+    user_questions = data_handler.get_all_data(data_handler.DATA_FILE_PATH_QUESTIONS, convert_linebreaks=True)
+    user_questions = from_timestamp_datetime(user_questions)
+
+    for question in user_questions:
+        if question['id'] == question_id:
+            answers = []
+            for answer in user_answers:
+                if question['id'] == answer['question_id']:
+                    answers.append(answer)
+    return question, answers
+
+
 def cast_vote(casted_id, direction):
     SINGLE_VOTE = 1
     if question_id != 8:
