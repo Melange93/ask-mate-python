@@ -47,6 +47,17 @@ def modify_question():
     return question
 
 
+def new_answer(question_id):
+    answer = {
+        'id': key_generator(),
+        'submission_time': get_current_timestamp(),
+        'vote_number': '0',
+        'question_id': question_id,
+        'message': request.form.get('message')
+    }
+    data_handler.add_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+    return answer
+
 def cast_vote(casted_id, direction):
     SINGLE_VOTE = 1
     if question_id != 8:
