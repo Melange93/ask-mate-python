@@ -6,6 +6,7 @@ import util
 app = Flask(__name__)
 
 
+@app.route('/')
 @app.route('/list')
 def route_list():
     user_questions = data_handler.get_all_data(data_handler.DATA_FILE_PATH_QUESTIONS, convert_linebreaks=True)
@@ -17,15 +18,7 @@ def route_list():
 @app.route('/ask-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        question = {
-            'id': util.key_generator(),
-            'submission_time': util.get_current_timestamp(),
-            'view_number': '0',
-            'vote_number': '0',
-            'title': request.form.get('title'),
-            'message': request.form.get('message')
-            }
-        data_handler.add_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+        question = util.new_question()
         question_id = question['id']
         return redirect(url_for('view_question', question_id=question_id))
 
