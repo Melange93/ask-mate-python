@@ -32,3 +32,22 @@ def new_question():
         }
     data_handler.add_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
     return question
+
+
+def cast_vote(casted_id, direction):
+    SINGLE_VOTE = 1
+    if question_id != 8:
+        all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
+        for selected_question in all_questions:
+            if selected_question['id'] == question_id:
+                question = selected_question
+                break
+        if direction == "up":
+            question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
+            data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS,
+                                          data_handler.DATA_HEADER_QUESTIONS)
+        elif down == "down":
+            question['vote_number'] = int(question['vote_number']) - SINGLE_VOTE
+            data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS,
+                                          data_handler.DATA_HEADER_QUESTIONS)
+        return
