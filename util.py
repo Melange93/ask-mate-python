@@ -34,6 +34,19 @@ def new_question():
     return question
 
 
+def modify_question():
+    question = {
+        'id': request.form.get('id'),
+        'submission_time': request.form.get('submission_time'),
+        'view_number': request.form.get('view_number'),
+        'vote_number': request.form.get('vote_number'),
+        'title': request.form.get('title'),
+        'message': request.form.get('message')
+    }
+    data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+    return question
+
+
 def cast_vote(casted_id, direction):
     SINGLE_VOTE = 1
     if question_id != 8:

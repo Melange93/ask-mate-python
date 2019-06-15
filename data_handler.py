@@ -31,8 +31,12 @@ def get_csv_data(needed_data):
     return user_data
 
 
-def get_user_story(story_id):
-    return get_csv_data(story_id)
+def get_specific_line_data(needed_data, specific_id):
+    all_data = get_csv_data(needed_data)
+    for selected_data in all_data:
+        if selected_data['id'] == specific_id:
+            break
+    return  selected_data
 
 
 def add_user_data(data, needed_data, matching_header):
