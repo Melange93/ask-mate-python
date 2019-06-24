@@ -29,7 +29,7 @@ def add_question():
         question_id = question['id']
         return redirect(url_for('view_question', question_id=question_id))
 
-    return render_template('questions.html',
+    return render_template('add_edit_questions.html',
                            form_url=url_for('add_question'),
                            page_title='Ask new question',
                            button_title='Add new question',
@@ -91,7 +91,7 @@ def edit_question(question_id):
             question = selected_question
             break
 
-    return render_template('questions.html',
+    return render_template('add_edit_questions.html',
                            page_title='Edit question',
                            button_title='Edit question',
                            question=question,
