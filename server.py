@@ -38,7 +38,7 @@ def add_question():
 @app.route('/question/<string:question_id>', methods=['GET'])
 def view_question(question_id=None):
     answers = data_handler.get_answer_data_by_id(question_id)
-    user_question = data_handler.get_question_data_by_id(question_id)
+    user_question = data_handler.get_question_data_by_id(question_id)[0]
     return render_template('question.html', user_question=user_question,
                                     answers=answers)
 
