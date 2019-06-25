@@ -107,11 +107,11 @@ def get_vote_number(cursor, needed_table, id):
 @database_common.connection_handler
 def set_vote(cursor, vote, needed_table, id):
     cursor.execute("""
-                    UPDATE needed_table
+                    UPDATE %s
                     SET vote_number = %s
                     WHERE id = %s;
                    """,
-                   (vote, id))
+                   (needed_table, vote, id))
 
 
 @database_common.connection_handler

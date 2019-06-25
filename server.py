@@ -107,7 +107,7 @@ def vote(question_id=None, answer_id=None, up=None):
     SINGLE_VOTE = 1
     if request.method == 'POST':
         if question_id and not answer_id:
-            question = data_handler.get_vote_number(question, question_id)
+            question = data_handler.get_vote_number(question_id)
             if up == "up":
                 question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
                 data_handler.set_vote(question['vote_number'], question, question_id)
@@ -116,7 +116,7 @@ def vote(question_id=None, answer_id=None, up=None):
                 data_handler.set_vote(question['vote_number'], question, question_id)
             return redirect(url_for('view_question', question_id=question_id))
         if answer_id and not question_id:
-            answer = data_handler.get_vote_number(answer, answer_id)
+            answer = data_handler.get_vote_number(answer_id)
             if up == "up":
                 answer['vote_number'] = int(answer['vote_number']) + SINGLE_VOTE
                 data_handler.set_vote(answer['vote_number'], answer, answer_id)
