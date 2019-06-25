@@ -118,7 +118,7 @@ def set_vote(cursor, vote, needed_table, id):
 def delete_question(cursor, question_id):
     cursor.execute("""
                     DELETE FROM question
-                    WHERE question_id = %s;
+                    WHERE id = %s;
                    """,
                    (question_id,))
     cursor.execute("""
