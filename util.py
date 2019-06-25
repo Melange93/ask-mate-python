@@ -1,6 +1,7 @@
 import datetime
 import uuid
 import time
+import random
 
 
 def from_timestamp_datetime(user_questions):
@@ -10,10 +11,15 @@ def from_timestamp_datetime(user_questions):
 
 
 def key_generator():
-    key = uuid.uuid4().hex
+    key = random.randint(1000000,10000000)
     return key
 
 
 def get_current_timestamp():
     timestamp = time.time()
     return round(timestamp)
+
+
+def get_current_datetime():
+    timestamp = datetime.datetime.now()
+    return timestamp

@@ -18,13 +18,14 @@ def add_question():
     if request.method == 'POST':
         question = {
             'id': util.key_generator(),
-            'submission_time': util.get_current_timestamp(),
+            'submission_time': util.get_current_datetime(),
             'view_number': '0',
             'vote_number': '0',
             'title': request.form.get('title'),
-            'message': request.form.get('message')
+            'message': request.form.get('message'),
+            'image': None
             }
-        data_handler.add_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+        data_handler.add_new_question(question)
         question_id = question['id']
         return redirect(url_for('view_question', question_id=question_id))
 

@@ -171,3 +171,20 @@ def get_answer_data_by_id(cursor, id_):
                    )
     answer_data = cursor.fetchall()
     return answer_data
+
+
+@database_common.connection_handler
+def add_new_question(cursor, question):
+    cursor.execute("""
+                    INSERT INTO question
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    """,
+                   (question['id'],
+                    question['submission_time'],
+                    question['view_number'],
+                    question['vote_number'],
+                    question['title'],
+                    question['message'],
+                    question['image']
+                        )
+                    )
