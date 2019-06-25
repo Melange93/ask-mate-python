@@ -6,11 +6,10 @@ import util
 app = Flask(__name__)
 
 
+@app.route('/')
 @app.route('/list')
 def route_list():
-    user_questions = data_handler.get_all_data(data_handler.DATA_FILE_PATH_QUESTIONS, convert_linebreaks=True)
-    user_questions.sort(key=lambda question: question['submission_time'], reverse=True)
-    user_questions = util.from_timestamp_datetime(user_questions)
+    user_questions = data_handler.get_questions()
     return render_template('list.html', user_questions=user_questions)
 
 
@@ -134,7 +133,7 @@ def del_record(question_id):
 
 if __name__ == '__main__':
     app.run(
-        host='0.0.0.0',
-        port=8000,
+        host='127.0.0.1',
+        port=5000,
         debug=True,
     )
