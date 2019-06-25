@@ -1,6 +1,7 @@
 import csv
 import os
 import util
+import database_common
 
 
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'question.csv'
@@ -90,3 +91,38 @@ def delete_data(story, needed_data, matching_header, answer=False):
 
 def convert_linebreaks_to_br(original_str):
     return "<br>".join(original_str.split('\n'))
+
+
+@database_common.connection_handler
+def get_vote_number(cursor, needed_table, id):
+    cursor.execute("""
+                    SELECT vote_number FROM needed_table
+                    WHERE id = %s;
+                   """,
+                   (needed_table, id, ))
+    vote_number = cursor.fetchall()
+    return vote_number
+
+
+@database_common.connection_handler
+def set_vote(cursor, vote, needed_table, id):
+    cursor.execute("""
+                    UPDATE needed_table
+                    SET vote_number = %s
+                    WHERE id = %s;
+                   """,
+                   (vote, id))
+
+
+@database_common.connection_handler
+def delete_question(cursor, question_id):
+    cursor.execute("""
+                    DELETE FROM question
+                    WHERE question_id = %s;
+                   """,
+                   (question_id,))
+    cursor.execute("""
+                        DELETE FROM answer
+                        WHERE question_id = %s;
+                       """,
+                   (question_id,))

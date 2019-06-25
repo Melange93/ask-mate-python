@@ -107,47 +107,29 @@ def vote(question_id=None, answer_id=None, up=None):
     SINGLE_VOTE = 1
     if request.method == 'POST':
         if question_id and not answer_id:
-            all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
-            for selected_question in all_questions:
-                if selected_question['id'] == question_id:
-                    question = selected_question
-                    break
+            question = data_handler.get_vote_number(question, question_id)
             if up == "up":
                 question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
-                data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+                data_handler.set_vote(question['vote_number'], question, question_id)
             else:
                 question['vote_number'] = int(question['vote_number']) - SINGLE_VOTE
-                data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+                data_handler.set_vote(question['vote_number'], question, question_id)
             return redirect(url_for('view_question', question_id=question_id))
         if answer_id and not question_id:
-            all_answers = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_ANSWERS)
-            for selected_answer in all_answers:
-                if selected_answer['id'] == answer_id:
-                    answer = selected_answer
-                    break
+            answer = data_handler.get_vote_number(answer, answer_id)
             if up == "up":
                 answer['vote_number'] = int(answer['vote_number']) + SINGLE_VOTE
-                data_handler.update_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+                data_handler.set_vote(answer['vote_number'], answer, answer_id)
             else:
                 answer['vote_number'] = int(answer['vote_number']) - SINGLE_VOTE
-                data_handler.update_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+                data_handler.set_vote(answer['vote_number'], answer, answer_id)
             return redirect(url_for('view_question', question_id=answer['question_id']))
 
 
 @app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
 def del_record(question_id):
-    all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
-
-    if request.method == 'POST':
-        for question in all_questions:
-            if question_id == question:
-                pass
-
-        data_handler.delete_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
-
-        data_handler.delete_data(question, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS, True)
-
-        return redirect('/list')
+    data_handler.delete_question(question_id)
+    return redirect('/list')
 
 
 if __name__ == '__main__':
