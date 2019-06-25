@@ -99,66 +99,39 @@ def edit_question(question_id):
                            )
 
 
-@app.route('/question/<question_id>/vote-up', methods=['GET', 'POST'])
-def upvote_question(question_id):
+@app.route('/answer/<answer_id>/vote-<down>', methods=['GET', 'POST'])
+@app.route('/answer/<answer_id>/vote-<up>', methods=['GET', 'POST'])
+@app.route('/question/<question_id>/vote-<down>', methods=['GET', 'POST'])
+@app.route('/question/<question_id>/vote-<up>', methods=['GET', 'POST'])
+def vote(question_id=None, answer_id=None, up=None):
+    SINGLE_VOTE = 1
     if request.method == 'POST':
-        all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
-        for selected_question in all_questions:
-            if selected_question['id'] == question_id:
-                question = selected_question
-                break
-        number_question = int(question['vote_number'])
-        number_question += 1
-        question['vote_number'] = str(number_question)
-        data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
-        return redirect(url_for('view_question', question_id=question_id))
-
-
-@app.route('/question/<question_id>/vote-down', methods=['GET', 'POST'])
-def downvote_question(question_id):
-    if request.method == 'POST':
-        all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
-        for selected_question in all_questions:
-            if selected_question['id'] == question_id:
-                question = selected_question
-                break
-        number_question = int(question['vote_number'])
-        number_question -= 1
-        question['vote_number'] = str(number_question)
-        data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
-        return redirect(url_for('view_question', question_id=question_id))
-
-
-@app.route('/answer/<answer_id>/vote-up', methods=['GET', 'POST'])
-def upvote_answer(answer_id):
-    if request.method == 'POST':
-        all_answer = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_ANSWERS)
-        for selected_answer in all_answer:
-            if selected_answer['id'] == answer_id:
-                answer = selected_answer
-                break
-        number_answer = int(answer['vote_number'])
-        number_answer += 1
-        answer['vote_number'] = str(number_answer)
-        data_handler.update_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
-        question_id = answer['question_id']
-        return redirect(url_for('view_question', question_id=question_id))
-
-
-@app.route('/answer/<answer_id>/vote-down', methods=['GET', 'POST'])
-def downvote_answer(answer_id):
-    if request.method == 'POST':
-        all_answer = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_ANSWERS)
-        for selected_answer in all_answer:
-            if selected_answer['id'] == answer_id:
-                answer = selected_answer
-                break
-        number_answer = int(answer['vote_number'])
-        number_answer -= 1
-        answer['vote_number'] = str(number_answer)
-        data_handler.update_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
-        question_id = answer['question_id']
-        return redirect(url_for('view_question', question_id=question_id))
+        if question_id and not answer_id:
+            all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
+            for selected_question in all_questions:
+                if selected_question['id'] == question_id:
+                    question = selected_question
+                    break
+            if up == "up":
+                question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
+                data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+            else:
+                question['vote_number'] = int(question['vote_number']) - SINGLE_VOTE
+                data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+            return redirect(url_for('view_question', question_id=question_id))
+        if answer_id and not question_id:
+            all_answers = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_ANSWERS)
+            for selected_answer in all_answers:
+                if selected_answer['id'] == answer_id:
+                    answer = selected_answer
+                    break
+            if up == "up":
+                answer['vote_number'] = int(answer['vote_number']) + SINGLE_VOTE
+                data_handler.update_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+            else:
+                answer['vote_number'] = int(answer['vote_number']) - SINGLE_VOTE
+                data_handler.update_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+            return redirect(url_for('view_question', question_id=answer['question_id']))
 
 
 @app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
