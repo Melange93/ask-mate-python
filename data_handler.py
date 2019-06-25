@@ -131,9 +131,43 @@ def delete_question(cursor, question_id):
 @database_common.connection_handler
 def get_questions(cursor):
     cursor.execute("""
-                    SELECT title, submission_time, vote_number, view_number, id FROM question
+                    SELECT * FROM question
                     ORDER BY submission_time ASC;
                    """
                    )
     questions = cursor.fetchall()
     return questions
+
+
+@database_common.connection_handler
+def get_answer(cursor):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    ORDER BY submission_time ASC;
+                   """
+                   )
+    answer = cursor.fetchall()
+    return answer
+
+@database_common.connection_handler
+def get_question_data_by_id(cursor, id_):
+    cursor.execute("""
+                    SELECT submission_time, view_number, vote_number, title, message, image, id FROM question
+                    WHERE id = %s ORDER BY submission_time ASC;
+                   """,
+                   (id_,)
+                   )
+    question_data = cursor.fetchall()
+    return question_data
+
+
+@database_common.connection_handler
+def get_answer_data_by_id(cursor, id_):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE question_id = %s ORDER BY submission_time ASC;
+                   """,
+                   (id_,)
+                   )
+    answer_data = cursor.fetchall()
+    return answer_data

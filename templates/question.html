@@ -23,19 +23,19 @@
         </thead>
 
         <tr>
-            <td>{{ question['title'] }}</td>
-            <td>{{ question['submission_time'] }}</td>
-            <td>{{ question['view_number'] }}</td>
-            <td>{{ question['vote_number'] }}</td>
-            <td>{{ question['message'] }}</td>
-            <td>{{ question['image'] }}</td>
+            <td>{{ user_question.title }}</td>
+            <td>{{ user_question.submission_time }}</td>
+            <td>{{ user_question.view_number }}</td>
+            <td>{{ user_question.vote_number }}</td>
+            <td>{{ user_question.messag }}</td>
+            <td>{{ user_question.image }}</td>
             <td>
-                 <form action="{{ url_for('upvote_question', question_id=question.id)}}" method="post">
+                 <form action="{{ url_for('vote', question_id=user_question.id, up=1)}}" method="post">
                     <input type="submit" value="Upvote" />
                  </form>
             </td>
             <td>
-                 <form action="{{ url_for('downvote_question', question_id=question.id)}}" method="post">
+                 <form action="{{ url_for('vote', question_id=user_question.id, up=1)}}" method="post">
                     <input type="submit" value="Downvote" />
                  </form>
             </td>
@@ -44,13 +44,13 @@
     </table>
 
     <p>
-        <a href="{{ url_for('edit_question', question_id=question.id)}}">Edit question</a>
+        <a href="{{ url_for('edit_question', question_id=user_question.id)}}">Edit question</a>
     </p>
     <br>
     <h2>Answer:</h2>
     <br>
     <p>
-        <a href="{{ url_for('new_answer', question_id=question['id']) }}">
+        <a href="{{ url_for('new_answer', question_id=user_question.id) }}">
             Add a new answer
         </a>
     </p>
@@ -68,17 +68,17 @@
 
         {% for answer in answers %}
             <tr>
-                <td>{{ answer['message'] }}</td>
-                <td>{{ answer['submission_time'] }}</td>
-                <td>{{ answer['vote_number'] }}</td>
-                <td>{{ answer['image'] }}</td>
+                <td>{{ answer.message }}</td>
+                <td>{{ answer.submission_time }}</td>
+                <td>{{ answer.vote_number }}</td>
+                <td>{{ answer.image }}</td>
                 <td>
-                     <form action="{{ url_for('upvote_answer', answer_id=answer.id)}}" method="post">
+                     <form action="{{ url_for('vote', answer_id=answer.id, up=1)}}" method="post">
                         <input type="submit" value="Upvote" />
                      </form>
                 </td>
                 <td>
-                     <form action="{{ url_for('downvote_answer', answer_id=answer.id)}}"method="post">
+                     <form action="{{ url_for('vote', answer_id=answer.id, up=1)}}"method="post">
                         <input type="submit" value="Downvote" />
                      </form>
                 </td>

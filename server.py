@@ -37,21 +37,10 @@ def add_question():
 
 @app.route('/question/<string:question_id>', methods=['GET'])
 def view_question(question_id=None):
-    user_answers = data_handler.get_all_data(data_handler.DATA_FILE_PATH_ANSWERS, convert_linebreaks=True)
-    user_answers = util.from_timestamp_datetime(user_answers)
-    user_questions = data_handler.get_all_data(data_handler.DATA_FILE_PATH_QUESTIONS, convert_linebreaks=True)
-    user_questions = util.from_timestamp_datetime(user_questions)
-
-    for question in user_questions:
-        if questions.id == question_id:
-            answers = []
-            for answer in user_answers:
-                if question.id == answer['question_id']:
-                    answers.append(answer)
-            return render_template('question.html', question=question,
+    answers = data_handler.get_answer_data_by_id(question_id)
+    user_question = data_handler.get_question_data_by_id(question_id)
+    return render_template('question.html', user_question=user_question,
                                     answers=answers)
-
-    return redirect('/list')
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
