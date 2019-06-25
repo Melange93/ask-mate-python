@@ -131,7 +131,7 @@ def delete_question(cursor, question_id):
 @database_common.connection_handler
 def get_questions(cursor):
     cursor.execute("""
-                    SELECT title, submission_time, vote_number, view_number FROM question
+                    SELECT title, submission_time, vote_number, view_number, id FROM question
                     ORDER BY submission_time ASC;
                    """
                    )

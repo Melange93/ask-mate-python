@@ -43,10 +43,10 @@ def view_question(question_id=None):
     user_questions = util.from_timestamp_datetime(user_questions)
 
     for question in user_questions:
-        if question['id'] == question_id:
+        if questions.id == question_id:
             answers = []
             for answer in user_answers:
-                if question['id'] == answer['question_id']:
+                if question.id == answer['question_id']:
                     answers.append(answer)
             return render_template('question.html', question=question,
                                     answers=answers)

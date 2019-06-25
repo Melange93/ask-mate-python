@@ -24,7 +24,7 @@
 
     {% for question in user_questions %}
     <tr>
-        <td><a href="{{ url_for('view_question', question_id=question['id'])}}">{{ question.title }}</a></td>
+        <td><a href="{{ url_for('view_question', question_id=question.id)}}">{{ question.title }}</a></td>
         <td>{{ question.submission_time }}</td>
         <td>{{ question.view_number }}</td>
         <td>{{ question.vote_number }}</td>
