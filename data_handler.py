@@ -146,4 +146,18 @@ def edit_question(cursor, question):
                     SET title = %s, message = %s
                     WHERE id = %s;
                    """,
-                   (question['title'], question['message'], question['id'],))
+                   (question['title'], question['message'], question['id'],))@database_common.connection_handler
+
+
+@database_common.connection_handler
+def get_limited_questions(cursor, limit_number):
+    cursor.execute("""
+                    SELECT * FROM question
+                    ORDER BY submission_time DESC LIMIT %s;
+                   """,
+                   (limit_number,)
+                   )
+    questions = cursor.fetchall()
+    return questions
+
+

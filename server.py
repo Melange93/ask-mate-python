@@ -7,6 +7,12 @@ app = Flask(__name__)
 
 
 @app.route('/')
+def show_top_5_questions():
+    LIMIT_NUMBER = 5
+    user_questions = data_handler.get_limited_questions(LIMIT_NUMBER)
+    return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER)
+
+
 @app.route('/list')
 def route_list():
     user_questions = data_handler.get_questions()
