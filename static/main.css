@@ -1,14 +1,23 @@
 body {
-    margin: 0;
-    padding: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #7DBDCB;
+    background: url(back.png) repeat top left;
     text-align: center;
 }
 
-table, th, td {
-    border: 1px dashed black;
-    border-collapse: collapse;
+.ask-mate {
+    background-color: rgba(255, 255, 255, 0.6)
+}
+
+.bg-light {
+    background-color: #567A92!important;
+}
+
+#navbar-main-text {
+    color: #FDCC71;
+}
+
+h2 {
+    font-style: italic;
 }
 
 table.center {
@@ -16,8 +25,11 @@ table.center {
     margin-right:auto;
 }
 
-h2 {
-    font-style: italic;
+table, th, td {
+    border: 1px dashed black;
+    border-collapse: collapse;
 }
 
-
+html, body, .container-fluid, .ask-mate {
+    height: 100%;
+}
