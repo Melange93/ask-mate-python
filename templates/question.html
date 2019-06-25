@@ -27,7 +27,7 @@
             <td>{{ user_question.submission_time }}</td>
             <td>{{ user_question.view_number }}</td>
             <td>{{ user_question.vote_number }}</td>
-            <td>{{ user_question.messag }}</td>
+            <td>{{ user_question.message }}</td>
             <td>{{ user_question.image }}</td>
             <td>
                  <form action="{{ url_for('vote', question_id=user_question.id, up="up")}}" method="post">

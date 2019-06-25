@@ -71,14 +71,10 @@ def edit_question(question_id):
             'title': request.form.get('title'),
             'message': request.form.get('message')
             }
-        data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+        temp = data_handler.edit_question(question)
         return redirect( url_for('view_question', question_id=question_id))
 
-    all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
-    for selected_question in all_questions:
-        if selected_question['id'] == question_id:
-            question = selected_question
-            break
+    question = data_handler.get_question_data_by_id(question_id)[0]
 
     return render_template('add_edit_questions.html',
                            page_title='Edit question',

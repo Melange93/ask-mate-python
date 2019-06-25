@@ -137,3 +137,13 @@ def add_new_question(cursor, question):
                     question['image']
                         )
                     )
+
+
+@database_common.connection_handler
+def edit_question(cursor, question):
+    cursor.execute("""
+                    UPDATE question
+                    SET title = %s, message = %s
+                    WHERE id = %s;
+                   """,
+                   (question['title'], question['message'], question['id'],))
