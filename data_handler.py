@@ -46,15 +46,35 @@ def set_vote_answer(cursor, id, vote_number):
 @database_common.connection_handler
 def delete_question(cursor, question_id):
     cursor.execute("""
-                    DELETE FROM question
-                    WHERE id = %s;
-                   """,
+                            DELETE FROM question_tag
+                            WHERE question_id = %s;
+                           """,
                    (question_id,))
+
+    cursor.execute("""
+                            DELETE FROM comment
+                            WHERE question_id = %s;
+                           """,
+                   (question_id,))
+
+    cursor.execute("""
+                            DELETE FROM comment
+                            WHERE answer_id = %s;
+                           """,
+                   (question_id,))
+
     cursor.execute("""
                         DELETE FROM answer
                         WHERE question_id = %s;
                        """,
                    (question_id,))
+
+    cursor.execute("""
+                    DELETE FROM question
+                    WHERE id = %s;
+                   """,
+                   (question_id,))
+
 
 
 @database_common.connection_handler
