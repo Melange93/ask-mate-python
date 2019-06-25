@@ -152,8 +152,8 @@ def get_answer(cursor):
 @database_common.connection_handler
 def get_question_data_by_id(cursor, id_):
     cursor.execute("""
-                    SELECT submission_time, view_number, vote_number, title, message, image, id FROM question
-                    WHERE id = %s ORDER BY submission_time ASC;
+                    SELECT * FROM question
+                    WHERE id = %s;
                    """,
                    (id_,)
                    )
