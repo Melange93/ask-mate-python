@@ -2,24 +2,45 @@ import database_common
 
 
 @database_common.connection_handler
-def get_vote_number(cursor, needed_table, id):
+def get_vote_number_question(cursor, id):
     cursor.execute("""
-                    SELECT vote_number FROM needed_table
+                    SELECT * FROM question
                     WHERE id = %s;
                    """,
-                   (needed_table, id, ))
-    vote_number = cursor.fetchall()
-    return vote_number
+                   (id, ))
+    question = cursor.fetchall()
+    return question
 
 
 @database_common.connection_handler
-def set_vote(cursor, vote, needed_table, id):
+def set_vote_question(cursor, id, vote_number):
     cursor.execute("""
-                    UPDATE %s
+                    UPDATE question
                     SET vote_number = %s
                     WHERE id = %s;
                    """,
-                   (needed_table, vote, id))
+                   (vote_number, id,))
+
+
+@database_common.connection_handler
+def get_vote_number_answer(cursor, id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE id = %s;
+                   """,
+                   (id, ))
+    question = cursor.fetchall()
+    return question
+
+
+@database_common.connection_handler
+def set_vote_answer(cursor, id, vote_number):
+    cursor.execute("""
+                    UPDATE answer
+                    SET vote_number = %s
+                    WHERE id = %s;
+                   """,
+                   (vote_number, id,))
 
 
 @database_common.connection_handler
