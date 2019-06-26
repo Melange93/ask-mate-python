@@ -62,11 +62,6 @@ def get_comments(cursor, question_id, answer_id):
 
 @database_common.connection_handler
 def delete_question(cursor, question_id):
-    cursor.execute("""
-                        DELETE FROM answer
-                        WHERE question_id = %s;
-                       """,
-                   (question_id,))
 
     cursor.execute("""
                     DELETE FROM question
