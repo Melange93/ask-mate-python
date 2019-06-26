@@ -11,6 +11,13 @@
 <a href="{{ url_for('add_question')}}">Ask new question</a>
 <br />
 </p>
+<h1>Ask Mate</h1>
+    {% if not limit_number %}
+    <p>
+        <a href="{{ url_for('add_question')}}">Ask new question</a>
+    <br />
+    </p>
+    {% endif %}
 <div>
 <table class="center">
     <thead>
@@ -36,6 +43,10 @@
         </td>
     </tr>
     {% endfor %}
+
+    {% if limit_number %}
+        <a href="{{ url_for('route_list')}}">See all questions</a>
+    {% endif %}
 
 </table>
 </div>

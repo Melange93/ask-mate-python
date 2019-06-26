@@ -7,6 +7,12 @@ app = Flask(__name__)
 
 
 @app.route('/')
+def show_top_5_questions():
+    LIMIT_NUMBER = 5
+    user_questions = data_handler.get_limited_questions(LIMIT_NUMBER)
+    return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER)
+
+
 @app.route('/list')
 def route_list():
     user_questions = data_handler.get_questions()
@@ -49,12 +55,12 @@ def new_answer(question_id=None):
     if request.method == 'POST':
         answer = {
             'id': util.key_generator(),
-            'submission_time': util.get_current_timestamp(),
+            'submission_time': util.get_current_datetime(),
             'vote_number': '0',
             'question_id': question_id,
             'message': request.form.get('message')
             }
-        data_handler.add_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+        data_handler.add_new_answer(answer)
         return redirect( url_for('view_question', question_id=question_id))
 
     return render_template('new-answer.html', question_id=question_id)
@@ -71,14 +77,10 @@ def edit_question(question_id):
             'title': request.form.get('title'),
             'message': request.form.get('message')
             }
-        data_handler.update_user_data(question, data_handler.DATA_FILE_PATH_QUESTIONS, data_handler.DATA_HEADER_QUESTIONS)
+        temp = data_handler.edit_question(question)
         return redirect( url_for('view_question', question_id=question_id))
 
-    all_questions = data_handler.get_csv_data(data_handler.DATA_FILE_PATH_QUESTIONS)
-    for selected_question in all_questions:
-        if selected_question['id'] == question_id:
-            question = selected_question
-            break
+    question = data_handler.get_question_data_by_id(question_id)[0]
 
     return render_template('add_edit_questions.html',
                            page_title='Edit question',
@@ -118,6 +120,7 @@ def vote(question_id=None, answer_id=None, up=None):
 @app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
 def del_record(question_id):
     data_handler.delete_question(question_id)
+
     return redirect('/list')
 
 

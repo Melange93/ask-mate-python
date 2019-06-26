@@ -44,17 +44,36 @@ def set_vote_answer(cursor, id, vote_number):
 
 
 @database_common.connection_handler
-def delete_question(cursor, question_id):
+def get_comments(cursor, question_id, answer_id):
     cursor.execute("""
-                    DELETE FROM question
-                    WHERE id = %s;
+                    SELECT * FROM comment
+                    WHERE question_id = %s;
                    """,
-                   (question_id,))
+                   (question_id,)
+                   )
+    cursor.execute("""
+                        SELECT * FROM comment
+                        WHERE answer_id = %s;
+                       """,
+                   (answer_id,)
+                   )
+    comments = cursor.fetchall()
+    return comments
+
+@database_common.connection_handler
+def delete_question(cursor, question_id):
     cursor.execute("""
                         DELETE FROM answer
                         WHERE question_id = %s;
                        """,
                    (question_id,))
+
+    cursor.execute("""
+                    DELETE FROM question
+                    WHERE id = %s;
+                   """,
+                   (question_id,))
+
 
 
 @database_common.connection_handler
@@ -115,5 +134,42 @@ def add_new_question(cursor, question):
                     question['title'],
                     question['message'],
                     question['image']
+                        )
+                    )
+
+
+@database_common.connection_handler
+def edit_question(cursor, question):
+    cursor.execute("""
+                    UPDATE question
+                    SET title = %s, message = %s
+                    WHERE id = %s;
+                   """,
+                   (question['title'], question['message'], question['id'],))
+
+
+@database_common.connection_handler
+def get_limited_questions(cursor, limit_number):
+    cursor.execute("""
+                    SELECT * FROM question
+                    ORDER BY submission_time DESC LIMIT %s;
+                   """,
+                   (limit_number,)
+                   )
+    questions = cursor.fetchall()
+    return questions
+
+
+@database_common.connection_handler
+def add_new_answer(cursor, answer):
+    cursor.execute("""
+                    INSERT INTO answer
+                    VALUES (%s, %s, %s, %s, %s)
+                    """,
+                   (answer['id'],
+                    answer['submission_time'],
+                    answer['vote_number'],
+                    answer['question_id'],
+                    answer['message']
                         )
                     )

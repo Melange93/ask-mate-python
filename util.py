@@ -1,5 +1,4 @@
 import datetime
-import uuid
 import time
 import random
 
@@ -21,5 +20,5 @@ def get_current_timestamp():
 
 
 def get_current_datetime():
-    timestamp = datetime.datetime.now()
-    return timestamp
+    current_datetime = datetime.datetime.now()
+    return current_datetime
