@@ -61,25 +61,7 @@ def get_comments(cursor, question_id, answer_id):
     return comments
 
 @database_common.connection_handler
-def delete_question(cursor, question_id, comments):
-    cursor.execute("""
-                            DELETE FROM question_tag
-                            WHERE question_id = %s;
-                           """,
-                   (question_id,))
-
-    cursor.execute("""
-                            DELETE FROM comment
-                            WHERE question_id = %s;
-                           """,
-                   (question_id,))
-
-    cursor.execute("""
-                            DELETE FROM comment
-                            WHERE answer_id = %s;
-                           """,
-                   (comments['answer_id'],))
-
+def delete_question(cursor, question_id):
     cursor.execute("""
                         DELETE FROM answer
                         WHERE question_id = %s;
