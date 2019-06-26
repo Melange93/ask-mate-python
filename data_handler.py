@@ -145,7 +145,7 @@ def edit_question(cursor, question):
                     SET title = %s, message = %s
                     WHERE id = %s;
                    """,
-                   (question['title'], question['message'], question['id'],))@database_common.connection_handler
+                   (question['title'], question['message'], question['id'],))
 
 
 @database_common.connection_handler
@@ -160,3 +160,16 @@ def get_limited_questions(cursor, limit_number):
     return questions
 
 
+@database_common.connection_handler
+def add_new_answer(cursor, answer):
+    cursor.execute("""
+                    INSERT INTO answer
+                    VALUES (%s, %s, %s, %s, %s)
+                    """,
+                   (answer['id'],
+                    answer['submission_time'],
+                    answer['vote_number'],
+                    answer['question_id'],
+                    answer['message']
+                        )
+                    )

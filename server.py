@@ -55,12 +55,12 @@ def new_answer(question_id=None):
     if request.method == 'POST':
         answer = {
             'id': util.key_generator(),
-            'submission_time': util.get_current_timestamp(),
+            'submission_time': util.get_current_datetime(),
             'vote_number': '0',
             'question_id': question_id,
             'message': request.form.get('message')
             }
-        data_handler.add_user_data(answer, data_handler.DATA_FILE_PATH_ANSWERS, data_handler.DATA_HEADER_ANSWERS)
+        data_handler.add_new_answer(answer)
         return redirect( url_for('view_question', question_id=question_id))
 
     return render_template('new-answer.html', question_id=question_id)
