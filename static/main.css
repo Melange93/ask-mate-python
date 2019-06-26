@@ -42,7 +42,7 @@ table.jumbotron text-center {
 }
 
 table, th, td {
-    border: 1px dashed black;
+    border: 1px solid black;
     border-collapse: collapse;
 }
 

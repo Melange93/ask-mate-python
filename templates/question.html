@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <h1>Ask Mate</h1>
+    <h1 xmlns="http://www.w3.org/1999/html">Ask Mate</h1>
     <br>
     <h2>Question:</h2>
     <br>
@@ -31,12 +31,12 @@
             <td>{{ user_question.image }}</td>
             <td>
                  <form action="{{ url_for('vote', question_id=user_question.id, up="up")}}" method="post">
-                    <input type="submit" value="Upvote" />
+                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👍</button>
                  </form>
             </td>
             <td>
                  <form action="{{ url_for('vote', question_id=user_question.id, down="down")}}" method="post">
-                    <input type="submit" value="Downvote" />
+                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👎</button>
                  </form>
             </td>
         </tr>
@@ -74,12 +74,12 @@
                 <td>{{ answer.image }}</td>
                 <td>
                      <form action="{{ url_for('vote', answer_id=answer.id, up="up")}}" method="post">
-                        <input type="submit" value="Upvote" />
+                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👎</button>
                      </form>
                 </td>
                 <td>
                      <form action="{{ url_for('vote', answer_id=answer.id, down="down")}}"method="post">
-                        <input type="submit" value="Downvote" />
+                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👎</button>
                      </form>
                 </td>
                 <td>
