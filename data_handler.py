@@ -197,7 +197,7 @@ def search_questions(cursor, searched_string):
     cursor.execute("""
                     SELECT * 
                       FROM question
-                     WHERE message LIKE %(searched_string)s
+                     WHERE title LIKE %(searched_string)s OR message LIKE %(searched_string)s
                     """,
                    {'searched_string': '%' + searched_string + '%'})
     return cursor.fetchall()
