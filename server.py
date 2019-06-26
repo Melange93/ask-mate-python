@@ -38,7 +38,7 @@ def add_question():
     return render_template('add_edit_questions.html',
                            form_url=url_for('add_question'),
                            page_title='Ask new question',
-                           button_title='Add new question',
+                           button_title='Submit question',
                            )
 
 
@@ -64,7 +64,10 @@ def new_answer(question_id=None):
         data_handler.add_new_answer(answer)
         return redirect(url_for('view_question', question_id=question_id))
 
-    return render_template('new-answer.html', question_id=question_id)
+    return render_template('add_edit_answer.html',
+                           page_title='Add answer',
+                           button_title='Submit answer',
+                           question_id=question_id)
 
 
 @app.route('/question/<string:question_id>/edit', methods=['GET', 'POST'])
@@ -123,3 +126,20 @@ def del_record(question_id):
     data_handler.delete_question(question_id)
 
     return redirect('/list')
+
+
+@app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    if request.method == 'POST':
+        answer = data_handler.get_answer_data_by_answer_id(answer_id)[0]
+        answer['message'] = request.form.get('message')
+        temp = data_handler.edit_answer(answer)
+        return redirect(url_for('view_question', question_id=answer['question_id']))
+
+    answer = data_handler.get_answer_data_by_answer_id(answer_id)[0]
+
+    return render_template('add_edit_answer.html',
+                           page_title='Edit answer',
+                           button_title='Edit answer',
+                           answer=answer
+                           )

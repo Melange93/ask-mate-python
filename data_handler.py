@@ -168,3 +168,25 @@ def add_new_answer(cursor, answer):
                     answer['message']
                         )
                     )
+
+
+@database_common.connection_handler
+def edit_answer(cursor, answer):
+    cursor.execute("""
+                    UPDATE answer
+                    SET message = %s
+                    WHERE id = %s;
+                   """,
+                   (answer['message'], answer['id'],))
+
+
+@database_common.connection_handler
+def get_answer_data_by_answer_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE id = %s;
+                   """,
+                   (answer_id,)
+                   )
+    answer_data = cursor.fetchall()
+    return answer_data
