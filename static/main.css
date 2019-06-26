@@ -12,8 +12,21 @@ body {
     background-color: #567A92!important;
 }
 
-#navbar-main-text {
+#navbar-main-text, .btn-outline-warning, #nav-home, #nav-new-q{
     color: #FDCC71;
+}
+
+.btn-outline-warning, .btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:hover {
+    border-color: #FDCC71;
+}
+
+.btn-outline-warning:focus {
+    box-shadow: 0 0 0 0.2rem rgba(253,204,113,.5);
+}
+
+.btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:hover {
+    color: #567A92;
+    background-color: #FDCC71;
 }
 
 h2 {
