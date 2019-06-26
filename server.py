@@ -46,8 +46,9 @@ def add_question():
 def view_question(question_id=None):
     answers = data_handler.get_answer_data_by_id(question_id)
     user_question = data_handler.get_question_data_by_id(question_id)[0]
-    return render_template('question.html', user_question=user_question,
-                                    answers=answers)
+    return render_template('question.html',
+                           user_question=user_question,
+                           answers=answers)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -61,7 +62,7 @@ def new_answer(question_id=None):
             'message': request.form.get('message')
             }
         data_handler.add_new_answer(answer)
-        return redirect( url_for('view_question', question_id=question_id))
+        return redirect(url_for('view_question', question_id=question_id))
 
     return render_template('new-answer.html', question_id=question_id)
 
@@ -78,7 +79,7 @@ def edit_question(question_id):
             'message': request.form.get('message')
             }
         temp = data_handler.edit_question(question)
-        return redirect( url_for('view_question', question_id=question_id))
+        return redirect(url_for('view_question', question_id=question_id))
 
     question = data_handler.get_question_data_by_id(question_id)[0]
 
@@ -122,11 +123,3 @@ def del_record(question_id):
     data_handler.delete_question(question_id)
 
     return redirect('/list')
-
-
-if __name__ == '__main__':
-    app.run(
-        host='127.0.0.1',
-        port=5000,
-        debug=True,
-    )
