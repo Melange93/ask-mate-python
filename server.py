@@ -143,3 +143,17 @@ def edit_answer(answer_id):
                            button_title='Edit answer',
                            answer=answer
                            )
+@app.route('/search', methods=['GET'])
+def search():
+    searched_string = request.args["searched_string"]
+    q_results = data_handler.search_questions(searched_string)
+    a_results = data_handler.search_answers(searched_string)
+    return render_template('search.html', q_results=q_results, a_results=a_results)
+
+
+if __name__ == '__main__':
+    app.run(
+        host='127.0.0.1',
+        port=5000,
+        debug=True,
+    )
