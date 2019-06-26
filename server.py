@@ -119,7 +119,10 @@ def vote(question_id=None, answer_id=None, up=None):
 
 @app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
 def del_record(question_id):
-    data_handler.delete_question(question_id)
+    answers = data_handler.get_answer_data_by_id(question_id)
+    comments = data_handler.get_comments(question_id, answers['answer_id'])
+    data_handler.delete_question(question_id, comments)
+
     return redirect('/list')
 
 
