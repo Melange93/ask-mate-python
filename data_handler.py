@@ -168,3 +168,47 @@ def add_new_answer(cursor, answer):
                     answer['message']
                         )
                     )
+
+
+@database_common.connection_handler
+def edit_answer(cursor, answer):
+    cursor.execute("""
+                    UPDATE answer
+                    SET message = %s
+                    WHERE id = %s;
+                   """,
+                   (answer['message'], answer['id'],))
+
+
+@database_common.connection_handler
+def get_answer_data_by_answer_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE id = %s;
+                   """,
+                   (answer_id,)
+                   )
+    answer_data = cursor.fetchall()
+    return answer_data
+
+
+@database_common.connection_handler
+def search_questions(cursor, searched_string):
+    cursor.execute("""
+                    SELECT * 
+                      FROM question
+                     WHERE message LIKE %(searched_string)s
+                    """,
+                   {'searched_string': '%' + searched_string + '%'})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def search_answers(cursor, searched_string):
+    cursor.execute("""
+                    SELECT * 
+                      FROM answer
+                     WHERE message LIKE %(searched_string)s
+                    """,
+                   {'searched_string': '%' + searched_string + '%'})
+    return cursor.fetchall()
