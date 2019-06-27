@@ -45,9 +45,13 @@
                 <span class="comment-header d-flex justify-content-start">Comment: </span>
                 <span class="comment-body">{{ question_comment.message }}</span>
                 <span class="comment-time d-flex justify-content-end">{{ question_comment.submission_time }}</span>
+                <span class="comment-edited d-flex justify-content-end">Edited count: {{ question_comment.edited_count }}</span>
             </td>
-            <td>Edit</td>
-            <td> <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_comment', comment_id=question_comment.id)}}
+            <td>
+                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_comment', comment_id=question_comment.id)}}">Edit</a>
+            </td>
+            <td>
+                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_comment', comment_id=question_comment.id)}}
                     "onclick="return confirm('Are you sure to delete this comment?')">Delete comment</a>
             </td>
         </tr>

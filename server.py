@@ -214,7 +214,7 @@ def add_new_tag(question_id = None):
                            question_id=question_id)
 
 
-@app.route('/comments/<comment_id>/delete', methods=['GET', 'POST'])
+@app.route('/comments/<comment_id>/delete', methods=['GET'])
 def del_comment(comment_id):
     q_and_a_id = data_handler.get_q_and_a_id_from_comment(comment_id)
     data_handler.delete_comment(comment_id)
@@ -226,6 +226,24 @@ def del_answer(answer_id):
     question_id = data_handler.get_answer_data_by_answer_id(answer_id)[0]
     data_handler.delete_answer(answer_id)
     return redirect(url_for('view_question', question_id=question_id['question_id']))
+
+
+@app.route('/comments/<comment_id>/edit', methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    if request.method == 'POST':
+        comment = data_handler.get_comment(comment_id)[0]
+        comment['message'] = request.form.get('message')
+        comment['edited_count'] += 1
+        data_handler.edit_comment(comment)
+        return redirect(url_for('view_question', question_id=comment['question_id']))
+
+    comment = data_handler.get_comment(comment_id)[0]
+
+    return render_template('add_edit_question_answer_comments.html',
+                           page_title='Edit comment',
+                           button_title='Edit comment',
+                           comment=comment
+                           )
 
 
 if __name__ == '__main__':

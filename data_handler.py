@@ -347,3 +347,27 @@ def get_question_tags(cursor, id_):
     question_tags = cursor.fetchall()
     return question_tags
 
+
+@database_common.connection_handler
+def get_comment(cursor, comment_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE id = %s;
+                   """,
+                   (comment_id,)
+                   )
+    comment = cursor.fetchall()
+    return comment
+
+
+@database_common.connection_handler
+def edit_comment(cursor, comment):
+    cursor.execute("""
+                    UPDATE comment
+                    SET message = %s, edited_count = %s
+                    WHERE id = %s;
+                   """,
+                   (comment['message'],
+                    comment['edited_count'],
+                    comment['id'],)
+                   )

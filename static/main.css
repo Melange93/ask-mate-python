@@ -66,11 +66,11 @@ td:hover {
     background-color: #E8D7C9;
 }
 
-.comment-header, .comment-time, .tag {
+.comment-header, .comment-time, .comment-edited , .tag {
     font-weight: bold;
 }
 
-.comment-body, .comment-time {
+.comment-body, .comment-time, comment-edited  {
     font-style: italic;
 }
 
