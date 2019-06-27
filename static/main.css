@@ -63,6 +63,6 @@ td, th {
     background-color: azure;
 }
 
-html, body, .container-fluid, .ask-mate {
+.container-fluid, .ask-mate {
     height: 100%;
 }
