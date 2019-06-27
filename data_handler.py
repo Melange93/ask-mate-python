@@ -324,3 +324,26 @@ def add_new_question_tag(cursor, tag):
                     tag['tag_id'],
                     )
                    )
+@database_common.connection_handler
+def get_tags(cursor, input_id_):
+    cursor.execute("""
+                    SELECT question_id, tag_id FROM question_tag
+                    WHERE question_id = %s;
+                   """,
+                   (input_id_,)
+                   )
+    tags = cursor.fetchall()
+    return tags
+
+
+@database_common.connection_handler
+def get_question_tags(cursor, id_):
+    cursor.execute("""
+                    SELECT name FROM tag
+                    WHERE id = %s;
+                   """,
+                   (id_,)
+                   )
+    question_tags = cursor.fetchall()
+    return question_tags
+

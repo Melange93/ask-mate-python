@@ -6,14 +6,16 @@
 
 {% block content %}
 
-    <h1>Add new tag</h1>
+<h1>Add new tag</h1>
+<br>
+<form action="{{ url_for('add_new_tag', question_id=question_id)}}" method="post">
+    <label for="tag">
+        New tag name:
+        <br>
+        <textarea name="tag_name" id="tag_name" rows="8" cols="70" required>{{ tag['tag_name'] if tag }}</textarea>
+        <br>
+    </label>
     <br>
-    <form action="{{ url_for('add_new_tag', question_id=question_id)}}" method="post">
-        <label for="tag"> New tag name:
-            <br>
-            <textarea name="tag_name" id="tag_name" rows="8" cols="70" required>{{ tag['tag_name'] if tag }}</textarea>
-            <br>
-        </label>
-        <button type="submit"> {{ button_title }} </button>
-    </form>
+    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit"> {{ button_title }} </button>
+</form>
 {% endblock %}

@@ -37,11 +37,20 @@ def view_question(question_id=None):
     answers = data_handler.get_answer_data_by_id(question_id)
     user_question = data_handler.get_question_data_by_id(question_id)[0]
     question_comments = data_handler.get_comments_for_question(question_id)
-    #answer_comments = data_handler.get_comments_for_answers(answer_id)
+    question_tag = data_handler.get_tags(question_id)
+    tags_ids = []
+    for element in question_tag:
+        tags_ids.append(element['tag_id'])
+    tags_names = []
+    for id_ in tags_ids:
+        tags_names.append(data_handler.get_question_tags(id_))
+    #answer_comments.append(data_handler.get_comments_for_answers(element[answer_id]))
     return render_template('question.html',
                            user_question=user_question,
                            answers=answers,
-                           question_comments=question_comments)
+                           question_comments=question_comments,
+                           tags_names=tags_names
+                           )
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -177,6 +186,7 @@ def new_answer_comment(answer_id=None):
                            page_title='Add comment to answer',
                            button_title='Submit comment',
                            answer_id=answer_id)
+
 
 @app.route('/question/<question_id>/add_tag', methods=['POST', 'GET'])
 def add_new_tag(question_id = None):

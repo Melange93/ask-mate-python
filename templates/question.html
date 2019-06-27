@@ -6,10 +6,8 @@
 
 {% block content %}
 
-<h1 xmlns="http://www.w3.org/1999/html">Ask Mate</h1>
-<br>
+<h1>Ask Mate</h1>
 <h2>Question:</h2>
-<br>
 <table class="center">
     <thead>
         <tr>
@@ -20,7 +18,6 @@
             <th>Message</th>
             <th>Image</th>
             <th colspan="2">Vote</th>
-            <th>Tags</th>
         </tr>
     </thead>
 
@@ -42,79 +39,42 @@
              </form>
         </td>
     </tr>
-
-</table>
-<br>
-
-    <p>
-        <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_question', question_id=user_question.id)}} ">Edit question</a>
-    </p>
-    <p>
-        <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_question_comment', question_id=user_question.id)}} ">Add comment to question</a>
-    </p>
-    <p>
-        <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('add_new_tag', question_id=user_question.id)}}">Add new tag</a>
-    </p>
-    <br>
-    <table class="center">
-        <thead>
-            <tr>
-                <th>Message</th>
-                <th>Submission Time</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for question_comment in question_comments %}
+    {% for question_comment in question_comments %}
         <tr>
-            <td>{{ question_comment.message }}</td>
-            <td>{{ question_comment.submission_time }}</td>
+            <td colspan="6">
+                <span class="comment-header d-flex justify-content-start">Comment: </span>
+                <span class="comment-body">{{ question_comment.message }}</span>
+                <span class="comment-time d-flex justify-content-end">{{ question_comment.submission_time }}</span>
+            </td>
+            <td>Edit</td>
             <td> <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_comment', comment_id=question_comment.id)}}
                     "onclick="return confirm('Are you sure to delete this comment?')">Delete comment</a>
             </td>
         </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <h2>Answer:</h2>
-    <br>
-    <p>
-        <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer', question_id=user_question.id) }}">
-            Add a new answer
-        </a>
-    </p>
-    <br>
-<p>
-    <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_question', question_id=user_question.id)}} ">Edit question</a>
-</p>
-<p>
-    <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_question_comment', question_id=user_question.id)}} ">Add comment to question</a>
-</p>
-<br>
-<table class="center">
-    <thead>
-        <tr>
-            <th>Message</th>
-            <th>Submission Time</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for question_comment in question_comments %}
-    <tr>
-        <td>{{ question_comment.message }}</td>
-        <td>{{ question_comment.submission_time }}</td>
-    </tr>
     {% endfor %}
-    </tbody>
+    <tr>
+        <td class="tag" colspan="8">
+            <span>Tags: </span>
+            {% for name in tags_names %}
+                {% for dict_ in name %}
+                    {% for value in dict_.values() %}
+                        <span>{{ value }}</span>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        </td>
+    </tr>
 </table>
-<h2>Answer:</h2>
 <br>
+<a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_question', question_id=user_question.id)}} ">Edit question</a>
+<a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_question_comment', question_id=user_question.id)}} ">Add comment to question</a>
+<a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('add_new_tag', question_id=user_question.id)}}">Add new tag</a>
+<br>
+<h2>Answer:</h2>
 <p>
     <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer', question_id=user_question.id) }}">
-        Add a new answer
-    </a>
+        Add a new answer</a>
 </p>
-<br>
-
 <table class="center">
     <thead>
         <tr>
