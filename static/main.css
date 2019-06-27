@@ -4,7 +4,7 @@ body {
     text-align: center;
 }
 
-h1 {
+h1, h2 {
     padding-top: 30px;
     padding-bottom: 30px;
 }
@@ -58,6 +58,22 @@ table {
     background: linear-gradient(45deg, #567A92, lightcyan);
 }
 
-td, th {
+th,td {
     background-color: azure;
+}
+
+td:hover {
+    background-color: #E8D7C9;
+}
+
+textarea{
+    font-color: white;
+    background-color: #567A92;
+    border: 5px solid #A5C3D2;
+    border-collapse: separate;
+    border-radius: 15px;
+}
+
+html, body, .container-fluid, .ask-mate {
+    height: 100%;
 }
