@@ -53,7 +53,7 @@ table, th, td {
 }
 
 table {
-    border-collapse: separate; #567A92
+    border-collapse: separate;
     border-spacing: 0px;
     border-radius: 15px;
     background: linear-gradient(45deg, #567A92, lightcyan);
