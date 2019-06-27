@@ -22,17 +22,7 @@ def route_list():
 @app.route('/ask-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        question = {
-            'id': util.key_generator(),
-            'submission_time': util.get_current_datetime(),
-            'view_number': '0',
-            'vote_number': '0',
-            'title': request.form.get('title'),
-            'message': request.form.get('message'),
-            'image': None
-            }
-        data_handler.add_new_question(question)
-        question_id = question['id']
+        question_id = util.add_question_wrapper()
         return redirect(url_for('view_question', question_id=question_id))
 
     return render_template('add_edit_questions.html',
