@@ -12,31 +12,31 @@
     <h1>New Questions</h1>
 {% endif %}
 <div>
-<table class="center">
-    <thead>
+    <table class="center">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Submission Time</th>
+                <th>View number</th>
+                <th>Vote number</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        {% for question in user_questions %}
         <tr>
-            <th>Title</th>
-            <th>Submission Time</th>
-            <th>View number</th>
-            <th>Vote number</th>
-            <th></th>
+            <td><a href="{{ url_for('view_question', question_id=question.id)}}">{{ question.title }}</a></td>
+            <td>{{ question.submission_time }}</td>
+            <td>{{ question.view_number }}</td>
+            <td>{{ question.vote_number }}</td>
+            <td>
+                <form action="{{ url_for('del_record', question_id=question.id)}}" method="post">
+                        <input type="submit" value="Delete" />
+                </form>
+            </td>
         </tr>
-    </thead>
+        {% endfor %}
 
-    {% for question in user_questions %}
-    <tr>
-        <td><a href="{{ url_for('view_question', question_id=question.id)}}">{{ question.title }}</a></td>
-        <td>{{ question.submission_time }}</td>
-        <td>{{ question.view_number }}</td>
-        <td>{{ question.vote_number }}</td>
-        <td>
-            <form action="{{ url_for('del_record', question_id=question.id)}}" method="post">
-                    <input type="submit" value="Delete" />
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
-
-</table>
+    </table>
 </div>
 {% endblock%}
