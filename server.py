@@ -46,9 +46,12 @@ def add_question():
 def view_question(question_id=None):
     answers = data_handler.get_answer_data_by_id(question_id)
     user_question = data_handler.get_question_data_by_id(question_id)[0]
+    question_comments = data_handler.get_comments_for_question(question_id)
+    #answer_comments = data_handler.get_comments_for_answers(answer_id)
     return render_template('question.html',
                            user_question=user_question,
-                           answers=answers)
+                           answers=answers,
+                           question_comments=question_comments)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -143,12 +146,53 @@ def edit_answer(answer_id):
                            button_title='Edit answer',
                            answer=answer
                            )
+
+
 @app.route('/search', methods=['GET'])
 def search():
     searched_string = request.args["searched_string"]
     q_results = data_handler.search_questions(searched_string)
     a_results = data_handler.search_answers(searched_string)
     return render_template('search.html', q_results=q_results, a_results=a_results)
+
+
+@app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
+def new_question_comment(question_id=None):
+    if request.method == 'POST':
+        question_comment = {
+            'id': util.key_generator(),
+            'question_id': question_id,
+            'message': request.form.get('message'),
+            'submission_time': util.get_current_datetime(),
+            'edited_count': '0'
+             }
+        data_handler.add_new_question_comment(question_comment)
+        return redirect(url_for('view_question', question_id=question_id))
+
+    return render_template('add_edit_question_answer_comments.html',
+                           page_title='Add comment to question',
+                           button_title='Submit comment',
+                           question_id=question_id)
+
+
+@app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
+def new_answer_comment(answer_id=None):
+    if request.method == 'POST':
+        answer_comment = {
+            'id': util.key_generator(),
+            'answer_id': answer_id,
+            'message': request.form.get('message'),
+            'submission_time': util.get_current_datetime(),
+            'edited_count': '0'
+             }
+        data_handler.add_new_answer_comment(answer_comment)
+        question_id = data_handler.get_answer_data_by_answer_id(answer_id)[0]
+        return redirect(url_for('view_question', question_id=question_id['question_id']))
+
+    return render_template('add_edit_question_answer_comments.html',
+                           page_title='Add comment to answer',
+                           button_title='Submit comment',
+                           answer_id=answer_id)
 
 
 if __name__ == '__main__':
