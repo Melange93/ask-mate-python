@@ -65,7 +65,8 @@
             <td>{{ question_comment.message }}</td>
             <td>{{ question_comment.submission_time }}</td>
             <td> <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_comment', comment_id=question_comment.id)}}
-                    "onclick="return confirm('Are you sure to delete this comment?')">Delete comment</a></td>
+                    "onclick="return confirm('Are you sure to delete this comment?')">Delete comment</a>
+            </td>
         </tr>
         {% endfor %}
         </tbody>
@@ -89,6 +90,7 @@
             <th colspan="2">Vote</th>
             <th>Edit</th>
             <th>Add</th>
+            <th>Delete</th>
         </tr>
     </thead>
 
@@ -113,6 +115,10 @@
             </td>
              <td>
                 <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer_comment', answer_id=answer.id)}}">Add comment</a>
+            </td>
+            <td>
+                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_answer', answer_id=answer.id)}}
+                    "onclick="return confirm('Are you sure to delete this comment?')">Delete answer</a>
             </td>
         </tr>
     {% endfor %}

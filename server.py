@@ -186,6 +186,13 @@ def del_comment(comment_id):
     return redirect(url_for('view_question', question_id=q_and_a_id[0]['question_id']))
 
 
+@app.route('/answer/<answer_id>/delete', methods=['GET'])
+def del_answer(answer_id):
+    question_id = data_handler.get_answer_data_by_answer_id(answer_id)[0]
+    data_handler.delete_answer(answer_id)
+    return redirect(url_for('view_question', question_id=question_id['question_id']))
+
+
 if __name__ == '__main__':
     app.run(
         host='127.0.0.1',

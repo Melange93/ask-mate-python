@@ -289,3 +289,13 @@ def get_q_and_a_id_from_comment(cursor, comment_id):
                    )
     question_id = cursor.fetchall()
     return question_id
+
+
+@database_common.connection_handler
+def delete_answer(cursor, answer_id):
+
+    cursor.execute("""
+                    DELETE FROM answer
+                    WHERE id = %s;
+                   """,
+                   (answer_id,))

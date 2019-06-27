@@ -29,12 +29,8 @@
             <td>{{ question.submission_time }}</td>
             <td>{{ question.view_number }}</td>
             <td>{{ question.vote_number }}</td>
-            <td>
-                <form action="{{ url_for('del_record', question_id=question.id)}}" method="post">
-                        <button class="btn btn-outline-warning my-2 my-sm-0 justify-content-center" type="submit">
-                            Delete
-                        </button>
-                </form>
+            <td> <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_record', question_id=question.id)}}
+                    "onclick="return confirm('Are you sure to delete this comment?')">Delete comment</a>
             </td>
         </tr>
     {% endfor %}
