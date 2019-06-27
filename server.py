@@ -22,17 +22,7 @@ def route_list():
 @app.route('/ask-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        question = {
-            'id': util.key_generator(),
-            'submission_time': util.get_current_datetime(),
-            'view_number': '0',
-            'vote_number': '0',
-            'title': request.form.get('title'),
-            'message': request.form.get('message'),
-            'image': None
-            }
-        data_handler.add_new_question(question)
-        question_id = question['id']
+        question_id = util.add_question_wrapper()
         return redirect(url_for('view_question', question_id=question_id))
 
     return render_template('add_edit_questions.html',
@@ -84,7 +74,7 @@ def edit_question(question_id):
             'title': request.form.get('title'),
             'message': request.form.get('message')
             }
-        temp = data_handler.edit_question(question)
+        data_handler.edit_question(question)
         return redirect(url_for('view_question', question_id=question_id))
 
     question = data_handler.get_question_data_by_id(question_id)[0]
@@ -97,31 +87,32 @@ def edit_question(question_id):
                            )
 
 
-@app.route('/answer/<answer_id>/vote-<down>', methods=['GET', 'POST'])
-@app.route('/answer/<answer_id>/vote-<up>', methods=['GET', 'POST'])
-@app.route('/question/<question_id>/vote-<down>', methods=['GET', 'POST'])
-@app.route('/question/<question_id>/vote-<up>', methods=['GET', 'POST'])
+@app.route('/answer/<answer_id>/vote-<down>', methods=['POST'])
+@app.route('/answer/<answer_id>/vote-<up>', methods=['POST'])
+@app.route('/question/<question_id>/vote-<down>', methods=['POST'])
+@app.route('/question/<question_id>/vote-<up>', methods=['POST'])
 def vote(question_id=None, answer_id=None, up=None):
     SINGLE_VOTE = 1
-    if request.method == 'POST':
-        if question_id and not answer_id:
-            question = data_handler.get_vote_number_question(question_id)[0]
-            if up == "up":
-                question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
-                data_handler.set_vote_question(question['id'], question['vote_number'])
-            else:
-                question['vote_number'] = int(question['vote_number']) - SINGLE_VOTE
-                data_handler.set_vote_question(question['id'], question['vote_number'])
-            return redirect(url_for('view_question', question_id=question_id))
-        if answer_id and not question_id:
-            answer = data_handler.get_vote_number_answer(answer_id)[0]
-            if up == "up":
-                answer['vote_number'] = int(answer['vote_number']) + SINGLE_VOTE
-                data_handler.set_vote_answer(answer['id'], answer['vote_number'])
-            else:
-                answer['vote_number'] = int(answer['vote_number']) - SINGLE_VOTE
-                data_handler.set_vote_answer(answer['id'], answer['vote_number'])
-            return redirect(url_for('view_question', question_id=answer['question_id']))
+
+    if question_id and not answer_id:
+        question = data_handler.get_vote_number_question(question_id)[0]
+        if up == "up":
+            question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
+            data_handler.set_vote_question(question['id'], question['vote_number'])
+        else:
+            question['vote_number'] = int(question['vote_number']) - SINGLE_VOTE
+            data_handler.set_vote_question(question['id'], question['vote_number'])
+        return redirect(url_for('view_question', question_id=question_id))
+
+    if answer_id and not question_id:
+        answer = data_handler.get_vote_number_answer(answer_id)[0]
+        if up == "up":
+            answer['vote_number'] = int(answer['vote_number']) + SINGLE_VOTE
+            data_handler.set_vote_answer(answer['id'], answer['vote_number'])
+        else:
+            answer['vote_number'] = int(answer['vote_number']) - SINGLE_VOTE
+            data_handler.set_vote_answer(answer['id'], answer['vote_number'])
+        return redirect(url_for('view_question', question_id=answer['question_id']))
 
 
 @app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
@@ -136,7 +127,7 @@ def edit_answer(answer_id):
     if request.method == 'POST':
         answer = data_handler.get_answer_data_by_answer_id(answer_id)[0]
         answer['message'] = request.form.get('message')
-        temp = data_handler.edit_answer(answer)
+        data_handler.edit_answer(answer)
         return redirect(url_for('view_question', question_id=answer['question_id']))
 
     answer = data_handler.get_answer_data_by_answer_id(answer_id)[0]

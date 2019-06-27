@@ -6,118 +6,118 @@
 
 {% block content %}
 
-    <h1 xmlns="http://www.w3.org/1999/html">Ask Mate</h1>
-    <br>
-    <h2>Question:</h2>
-    <br>
-    <table class="center">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Submission Time</th>
-                <th>View number</th>
-                <th>Vote number</th>
-                <th>Message</th>
-                <th>Image</th>
-                <th colspan="2">Vote</th>
-            </tr>
-        </thead>
-
+<h1 xmlns="http://www.w3.org/1999/html">Ask Mate</h1>
+<br>
+<h2>Question:</h2>
+<br>
+<table class="center">
+    <thead>
         <tr>
-            <td>{{ user_question.title }}</td>
-            <td>{{ user_question.submission_time }}</td>
-            <td>{{ user_question.view_number }}</td>
-            <td>{{ user_question.vote_number }}</td>
-            <td>{{ user_question.message }}</td>
-            <td>{{ user_question.image }}</td>
+            <th>Title</th>
+            <th>Submission Time</th>
+            <th>View number</th>
+            <th>Vote number</th>
+            <th>Message</th>
+            <th>Image</th>
+            <th colspan="2">Vote</th>
+        </tr>
+    </thead>
+
+    <tr>
+        <td>{{ user_question.title }}</td>
+        <td>{{ user_question.submission_time }}</td>
+        <td>{{ user_question.view_number }}</td>
+        <td>{{ user_question.vote_number }}</td>
+        <td>{{ user_question.message }}</td>
+        <td>{{ user_question.image }}</td>
+        <td>
+             <form action="{{ url_for('vote', question_id=user_question.id, up="up")}}" method="post">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👍</button>
+             </form>
+        </td>
+        <td>
+             <form action="{{ url_for('vote', question_id=user_question.id, down="down")}}" method="post">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👎</button>
+             </form>
+        </td>
+    </tr>
+
+</table>
+<br>
+
+<p>
+    <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_question', question_id=user_question.id)}} ">Edit question</a>
+</p>
+<p>
+    <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_question_comment', question_id=user_question.id)}} ">Add comment to question</a>
+</p>
+<br>
+<table class="center">
+    <thead>
+        <tr>
+            <th>Message</th>
+            <th>Submission Time</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for question_comment in question_comments %}
+    <tr>
+        <td>{{ question_comment.message }}</td>
+        <td>{{ question_comment.submission_time }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<h2>Answer:</h2>
+<br>
+<p>
+    <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer', question_id=user_question.id) }}">
+        Add a new answer
+    </a>
+</p>
+<br>
+
+<table class="center">
+    <thead>
+        <tr>
+            <th>Message</th>
+            <th>Submission Time</th>
+            <th>Vote number</th>
+            <th>Image</th>
+            <th colspan="2">Vote</th>
+            <th>Edit</th>
+            <th>Add</th>
+        </tr>
+    </thead>
+
+    {% for answer in answers %}
+        <tr>
+            <td>{{ answer.message }}</td>
+            <td>{{ answer.submission_time }}</td>
+            <td>{{ answer.vote_number }}</td>
+            <td>{{ answer.image }}</td>
             <td>
-                 <form action="{{ url_for('vote', question_id=user_question.id, up="up")}}" method="post">
+                 <form action="{{ url_for('vote', answer_id=answer.id, up="up")}}" method="post">
                     <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👍</button>
                  </form>
             </td>
             <td>
-                 <form action="{{ url_for('vote', question_id=user_question.id, down="down")}}" method="post">
+                 <form action="{{ url_for('vote', answer_id=answer.id, down="down")}}"method="post">
                     <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👎</button>
                  </form>
             </td>
+            <td>
+                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_answer', answer_id=answer.id)}}">Edit answer</a>
+            </td>
+             <td>
+                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer_comment', answer_id=answer.id)}}">Add comment</a>
+            </td>
         </tr>
-
-    </table>
-    <br>
-
-    <p>
-        <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_question', question_id=user_question.id)}} ">Edit question</a>
-    </p>
-    <p>
-        <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_question_comment', question_id=user_question.id)}} ">Add comment to question</a>
-    </p>
-    <br>
-    <table class="center">
-        <thead>
-            <tr>
-                <th>Message</th>
-                <th>Submission Time</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for question_comment in question_comments %}
-        <tr>
-            <td>{{ question_comment.message }}</td>
-            <td>{{ question_comment.submission_time }}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <h2>Answer:</h2>
-    <br>
-    <p>
-        <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer', question_id=user_question.id) }}">
-            Add a new answer
-        </a>
-    </p>
-    <br>
-
-    <table class="center">
-        <thead>
-            <tr>
-                <th>Message</th>
-                <th>Submission Time</th>
-                <th>Vote number</th>
-                <th>Image</th>
-                <th colspan="2">Vote</th>
-                <th>Edit</th>
-                <th>Add</th>
-            </tr>
-        </thead>
-
-        {% for answer in answers %}
-            <tr>
-                <td>{{ answer.message }}</td>
-                <td>{{ answer.submission_time }}</td>
-                <td>{{ answer.vote_number }}</td>
-                <td>{{ answer.image }}</td>
-                <td>
-                     <form action="{{ url_for('vote', answer_id=answer.id, up="up")}}" method="post">
-                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👍</button>
-                     </form>
-                </td>
-                <td>
-                     <form action="{{ url_for('vote', answer_id=answer.id, down="down")}}"method="post">
-                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👎</button>
-                     </form>
-                </td>
-                <td>
-                    <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_answer', answer_id=answer.id)}}">Edit answer</a>
-                </td>
-                 <td>
-                    <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer_comment', answer_id=answer.id)}}">Add comment</a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-    <br>
-    <form action="{{ url_for('route_list') }}">
-        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Back</button>
-    </form>
-    <br>
+    {% endfor %}
+</table>
+<br>
+<form action="{{ url_for('route_list') }}">
+    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Back</button>
+</form>
+<br>
 {% endblock%}
