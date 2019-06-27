@@ -212,3 +212,57 @@ def search_answers(cursor, searched_string):
                     """,
                    {'searched_string': '%' + searched_string + '%'})
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def add_new_question_comment(cursor, question_comment):
+    cursor.execute("""
+                    INSERT INTO comment (id, question_id, message, submission_time, edited_count)
+                    VALUES (%s, %s, %s, %s, %s)
+                    """,
+                   (question_comment['id'],
+                    question_comment['question_id'],
+                    question_comment['message'],
+                    question_comment['submission_time'],
+                    question_comment['edited_count'],
+                        )
+                    )
+
+
+@database_common.connection_handler
+def add_new_answer_comment(cursor, answer_comment):
+    cursor.execute("""
+                    INSERT INTO comment (id, answer_id, message, submission_time, edited_count)
+                    VALUES (%s, %s, %s, %s, %s)
+                    """,
+                   (answer_comment['id'],
+                    answer_comment['answer_id'],
+                    answer_comment['message'],
+                    answer_comment['submission_time'],
+                    answer_comment['edited_count'],
+                        )
+                    )
+
+
+@database_common.connection_handler
+def get_comments_for_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE question_id = %s ORDER BY submission_time ASC;
+                   """,
+                   (question_id,)
+                   )
+    question_comments = cursor.fetchall()
+    return question_comments
+
+
+@database_common.connection_handler
+def get_comments_for_answers(cursor, answer_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE answer_id = %s ORDER BY submission_time ASC;
+                   """,
+                   (answer_id,)
+                   )
+    answers_comments = cursor.fetchall()
+    return answers_comments

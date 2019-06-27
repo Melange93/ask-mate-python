@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+   {{page_title}}
+{% endblock%}
+
+{% block content %}
+    {% if question_id %}
+    <h1>Add comment to question</h1>
+    {%  endif %}
+    {% if answer_id %}
+    <h1>Add comment to answer</h1>
+    {%  endif %}
+
+    <br>
+    {% if question_id %}
+    <form action="{{ url_for('new_question_comment', question_id=question_id) }}" method="post">
+    {%  endif %}
+
+    {% if answer_id %}
+    <form action="{{ url_for('new_answer_comment', answer_id=answer_id) }}" method="post">
+    {%  endif %}
+
+        <label for="message"> Message:
+            <br>
+            <textarea name="message" id="message" rows="8" cols="70" required></textarea>
+            <br>
+        </label>
+        <button type="submit"> {{ button_title }} </button>
+    </form>
+{% endblock %}
