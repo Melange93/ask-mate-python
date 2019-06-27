@@ -11,7 +11,7 @@
 {% else %}
     <h1>New Questions</h1>
 {% endif %}
-<div>
+<div class="main">
     <table class="center">
         <thead>
             <tr>
@@ -23,7 +23,7 @@
             </tr>
         </thead>
 
-        {% for question in user_questions %}
+    {% for question in user_questions %}
         <tr>
             <td><a href="{{ url_for('view_question', question_id=question.id)}}">{{ question.title }}</a></td>
             <td>{{ question.submission_time }}</td>
@@ -31,12 +31,14 @@
             <td>{{ question.vote_number }}</td>
             <td>
                 <form action="{{ url_for('del_record', question_id=question.id)}}" method="post">
-                        <input type="submit" value="Delete" />
+                        <button class="btn btn-outline-warning my-2 my-sm-0 justify-content-center" type="submit">
+                            Delete
+                        </button>
                 </form>
             </td>
         </tr>
-        {% endfor %}
+    {% endfor %}
 
-    </table>
-</div>
+</table>
+
 {% endblock%}

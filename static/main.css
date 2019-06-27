@@ -4,13 +4,15 @@ body {
     text-align: center;
 }
 
-h1 {
+h1, h2 {
     padding-top: 30px;
     padding-bottom: 30px;
 }
 
-.ask-mate {
-    background-color: rgba(255, 255, 255, 0.6)
+#ask-mate {
+    background-color: rgba(255, 255, 255, 0.6);
+    height: 100%;
+    padding-bottom: 5%;
 }
 
 .bg-light {
@@ -46,10 +48,7 @@ table.center {
 
 table, th, td {
     border: 1px solid #567A92;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px 15px;
 }
 
 table {
@@ -59,8 +58,20 @@ table {
     background: linear-gradient(45deg, #567A92, lightcyan);
 }
 
-td, th {
+th,td {
     background-color: azure;
+}
+
+td:hover {
+    background-color: #E8D7C9;
+}
+
+textarea{
+    font-color: white;
+    background-color: #567A92;
+    border: 5px solid #A5C3D2;
+    border-collapse: separate;
+    border-radius: 15px;
 }
 
 html, body, .container-fluid, .ask-mate {
