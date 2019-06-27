@@ -64,6 +64,8 @@
         <tr>
             <td>{{ question_comment.message }}</td>
             <td>{{ question_comment.submission_time }}</td>
+            <td> <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_comment', comment_id=question_comment.id)}}
+                    "onclick="return confirm('Are you sure to delete this comment?')">Delete comment</a></td>
         </tr>
         {% endfor %}
         </tbody>

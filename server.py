@@ -47,14 +47,7 @@ def view_question(question_id=None):
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id=None):
     if request.method == 'POST':
-        answer = {
-            'id': util.key_generator(),
-            'submission_time': util.get_current_datetime(),
-            'vote_number': '0',
-            'question_id': question_id,
-            'message': request.form.get('message')
-            }
-        data_handler.add_new_answer(answer)
+        util.add_answer_wrapper(question_id)
         return redirect(url_for('view_question', question_id=question_id))
 
     return render_template('add_edit_answer.html',
@@ -184,6 +177,13 @@ def new_answer_comment(answer_id=None):
                            page_title='Add comment to answer',
                            button_title='Submit comment',
                            answer_id=answer_id)
+
+
+@app.route('/comments/<comment_id>/delete', methods=['GET', 'POST'])
+def del_comment(comment_id):
+    q_and_a_id = data_handler.get_q_and_a_id_from_comment(comment_id)
+    data_handler.delete_comment(comment_id)
+    return redirect(url_for('view_question', question_id=q_and_a_id[0]['question_id']))
 
 
 if __name__ == '__main__':

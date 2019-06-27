@@ -60,6 +60,7 @@ def get_comments(cursor, question_id, answer_id):
     comments = cursor.fetchall()
     return comments
 
+
 @database_common.connection_handler
 def delete_question(cursor, question_id):
 
@@ -68,7 +69,6 @@ def delete_question(cursor, question_id):
                     WHERE id = %s;
                    """,
                    (question_id,))
-
 
 
 @database_common.connection_handler
@@ -91,6 +91,7 @@ def get_answer(cursor):
                    )
     answer = cursor.fetchall()
     return answer
+
 
 @database_common.connection_handler
 def get_question_data_by_id(cursor, id_):
@@ -266,3 +267,25 @@ def get_comments_for_answers(cursor, answer_id):
                    )
     answers_comments = cursor.fetchall()
     return answers_comments
+
+
+@database_common.connection_handler
+def delete_comment(cursor, comment_id):
+
+    cursor.execute("""
+                    DELETE FROM comment
+                    WHERE id = %s;
+                   """,
+                   (comment_id,))
+
+
+@database_common.connection_handler
+def get_q_and_a_id_from_comment(cursor, comment_id):
+    cursor.execute("""
+                    SELECT question_id,answer_id FROM comment
+                    WHERE id = %s;
+                   """,
+                   (comment_id,)
+                   )
+    question_id = cursor.fetchall()
+    return question_id

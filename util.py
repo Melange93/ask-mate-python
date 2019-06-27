@@ -39,3 +39,14 @@ def add_question_wrapper():
     data_handler.add_new_question(question)
     question_id = question['id']
     return question_id
+
+
+def add_answer_wrapper(question_id):
+    answer = {
+        'id': key_generator(),
+        'submission_time': get_current_datetime(),
+        'vote_number': '0',
+        'question_id': question_id,
+        'message': request.form.get('message')
+    }
+    data_handler.add_new_answer(answer)
