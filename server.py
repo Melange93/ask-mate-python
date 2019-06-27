@@ -36,20 +36,27 @@ def add_question():
 def view_question(question_id=None):
     answers = data_handler.get_answer_data_by_id(question_id)
     user_question = data_handler.get_question_data_by_id(question_id)[0]
+    #answer commantss half way
+    answers_ids = []
+    for answer in answers:
+        for key, value in answer.items():
+            if key == 'id':
+                answers_ids.append(value)
+    comments = [data_handler.get_comments_for_answers(id_) for id_ in answers_ids]
+
     question_comments = data_handler.get_comments_for_question(question_id)
     question_tag = data_handler.get_tags(question_id)
     tags_ids = []
     for element in question_tag:
         tags_ids.append(element['tag_id'])
-    tags_names = []
-    for id_ in tags_ids:
-        tags_names.append(data_handler.get_question_tags(id_))
+    tags_names = [data_handler.get_question_tags(id_) for id_ in tags_ids]
     #answer_comments.append(data_handler.get_comments_for_answers(element[answer_id]))
     return render_template('question.html',
                            user_question=user_question,
                            answers=answers,
                            question_comments=question_comments,
-                           tags_names=tags_names
+                           tags_names=tags_names,
+                           comments=comments,
                            )
 
 
