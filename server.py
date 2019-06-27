@@ -178,6 +178,24 @@ def new_answer_comment(answer_id=None):
                            button_title='Submit comment',
                            answer_id=answer_id)
 
+@app.route('/question/<question_id>/add_tag', methods=['POST', 'GET'])
+def add_new_tag(question_id = None):
+    if request.method == 'POST':
+        tag = {
+            'tag_id': util.key_generator(),
+            'tag_name': request.form.get('tag_name'),
+            'question_id': question_id
+        }
+        print(tag['tag_name'])
+        data_handler.add_new_tag(tag)
+        data_handler.add_new_question_tag(tag)
+        return redirect(url_for('view_question', question_id=question_id))
+
+    return render_template('add_new_tag.html',
+                           page_title='Add new tag',
+                           button_title='Submit tag',
+                           question_id=question_id)
+
 
 @app.route('/comments/<comment_id>/delete', methods=['GET', 'POST'])
 def del_comment(comment_id):

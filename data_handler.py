@@ -299,3 +299,28 @@ def delete_answer(cursor, answer_id):
                     WHERE id = %s;
                    """,
                    (answer_id,))
+
+
+@database_common.connection_handler
+def add_new_tag(cursor, tag):
+    cursor.execute("""
+                    INSERT INTO tag
+                    VALUES (%s, %s)
+    
+                   """,
+                   (tag['tag_id'],
+                    tag['tag_name'],
+                    )
+                   )
+
+@database_common.connection_handler
+def add_new_question_tag(cursor, tag):
+    cursor.execute("""
+                        INSERT INTO question_tag
+                        VALUES (%s, %s)
+
+                       """,
+                   (tag['question_id'],
+                    tag['tag_id'],
+                    )
+                   )
