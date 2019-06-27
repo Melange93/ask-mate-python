@@ -67,6 +67,14 @@ td:hover {
     background-color: #E8D7C9;
 }
 
+textarea{
+    font-color: white;
+    background-color: #567A92;
+    border: 5px solid #A5C3D2;
+    border-collapse: separate;
+    border-radius: 15px;
+}
+
 html, body, .container-fluid, .ask-mate {
     height: 100%;
 }
