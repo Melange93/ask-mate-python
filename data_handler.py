@@ -60,6 +60,7 @@ def get_comments(cursor, question_id, answer_id):
     comments = cursor.fetchall()
     return comments
 
+
 @database_common.connection_handler
 def delete_question(cursor, question_id):
 
@@ -68,7 +69,6 @@ def delete_question(cursor, question_id):
                     WHERE id = %s;
                    """,
                    (question_id,))
-
 
 
 @database_common.connection_handler
@@ -91,6 +91,7 @@ def get_answer(cursor):
                    )
     answer = cursor.fetchall()
     return answer
+
 
 @database_common.connection_handler
 def get_question_data_by_id(cursor, id_):
@@ -277,3 +278,107 @@ def get_comments_for_answers(cursor, answer_id):
                    )
     answers_comments = cursor.fetchall()
     return answers_comments
+
+
+@database_common.connection_handler
+def delete_comment(cursor, comment_id):
+
+    cursor.execute("""
+                    DELETE FROM comment
+                    WHERE id = %s;
+                   """,
+                   (comment_id,))
+
+
+@database_common.connection_handler
+def get_q_and_a_id_from_comment(cursor, comment_id):
+    cursor.execute("""
+                    SELECT question_id,answer_id FROM comment
+                    WHERE id = %s;
+                   """,
+                   (comment_id,)
+                   )
+    question_id = cursor.fetchall()
+    return question_id
+
+
+@database_common.connection_handler
+def delete_answer(cursor, answer_id):
+
+    cursor.execute("""
+                    DELETE FROM answer
+                    WHERE id = %s;
+                   """,
+                   (answer_id,))
+
+
+@database_common.connection_handler
+def add_new_tag(cursor, tag):
+    cursor.execute("""
+                    INSERT INTO tag
+                    VALUES (%s, %s)
+    
+                   """,
+                   (tag['tag_id'],
+                    tag['tag_name'],
+                    )
+                   )
+
+@database_common.connection_handler
+def add_new_question_tag(cursor, tag):
+    cursor.execute("""
+                        INSERT INTO question_tag
+                        VALUES (%s, %s)
+
+                       """,
+                   (tag['question_id'],
+                    tag['tag_id'],
+                    )
+                   )
+@database_common.connection_handler
+def get_tags(cursor, input_id_):
+    cursor.execute("""
+                    SELECT question_id, tag_id FROM question_tag
+                    WHERE question_id = %s;
+                   """,
+                   (input_id_,)
+                   )
+    tags = cursor.fetchall()
+    return tags
+
+
+@database_common.connection_handler
+def get_question_tags(cursor, id_):
+    cursor.execute("""
+                    SELECT name FROM tag
+                    WHERE id = %s;
+                   """,
+                   (id_,)
+                   )
+    question_tags = cursor.fetchall()
+    return question_tags
+
+
+@database_common.connection_handler
+def get_comment(cursor, comment_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE id = %s;
+                   """,
+                   (comment_id,)
+                   )
+    comment = cursor.fetchall()
+    return comment
+
+
+@database_common.connection_handler
+def edit_comment(cursor, comment):
+    cursor.execute("""
+                    UPDATE comment
+                    SET message = %s, edited_count = %s
+                    WHERE id = %s;
+                   """,
+                   (comment['message'],
+                    comment['edited_count'],
+                    comment['id'],)
+                   )

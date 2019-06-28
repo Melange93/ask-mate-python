@@ -23,20 +23,18 @@
             </tr>
         </thead>
 
-        {% for question in user_questions %}
+    {% for question in user_questions %}
         <tr>
             <td><a href="{{ url_for('view_question', question_id=question.id)}}">{{ question.title }}</a></td>
             <td>{{ question.submission_time }}</td>
             <td>{{ question.view_number }}</td>
             <td>{{ question.vote_number }}</td>
-            <td>
-                <form action="{{ url_for('del_record', question_id=question.id)}}" method="post">
-                        <input type="submit" value="Delete" />
-                </form>
+            <td> <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_record', question_id=question.id)}}
+                    "onclick="return confirm('Are you sure to delete this comment?')">Delete comment</a>
             </td>
         </tr>
-        {% endfor %}
+    {% endfor %}
 
-    </table>
-</div>
+</table>
+
 {% endblock%}

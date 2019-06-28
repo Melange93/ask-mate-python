@@ -36,25 +36,34 @@ def add_question():
 def view_question(question_id=None):
     answers = data_handler.get_answer_data_by_id(question_id)
     user_question = data_handler.get_question_data_by_id(question_id)[0]
+    #answer commantss half way
+    answers_ids = []
+    for answer in answers:
+        for key, value in answer.items():
+            if key == 'id':
+                answers_ids.append(value)
+    comments = [data_handler.get_comments_for_answers(id_) for id_ in answers_ids]
+
     question_comments = data_handler.get_comments_for_question(question_id)
-    #answer_comments = data_handler.get_comments_for_answers(answer_id)
+    question_tag = data_handler.get_tags(question_id)
+    tags_ids = []
+    for element in question_tag:
+        tags_ids.append(element['tag_id'])
+    tags_names = [data_handler.get_question_tags(id_) for id_ in tags_ids]
+    #answer_comments.append(data_handler.get_comments_for_answers(element[answer_id]))
     return render_template('question.html',
                            user_question=user_question,
                            answers=answers,
-                           question_comments=question_comments)
+                           question_comments=question_comments,
+                           tags_names=tags_names,
+                           comments=comments,
+                           )
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id=None):
     if request.method == 'POST':
-        answer = {
-            'id': util.key_generator(),
-            'submission_time': util.get_current_datetime(),
-            'vote_number': '0',
-            'question_id': question_id,
-            'message': request.form.get('message')
-            }
-        data_handler.add_new_answer(answer)
+        util.add_answer_wrapper(question_id)
         return redirect(url_for('view_question', question_id=question_id))
 
     return render_template('add_edit_answer.html',
@@ -184,6 +193,57 @@ def new_answer_comment(answer_id=None):
                            page_title='Add comment to answer',
                            button_title='Submit comment',
                            answer_id=answer_id)
+
+
+@app.route('/question/<question_id>/add_tag', methods=['POST', 'GET'])
+def add_new_tag(question_id = None):
+    if request.method == 'POST':
+        tag = {
+            'tag_id': util.key_generator(),
+            'tag_name': request.form.get('tag_name'),
+            'question_id': question_id
+        }
+        print(tag['tag_name'])
+        data_handler.add_new_tag(tag)
+        data_handler.add_new_question_tag(tag)
+        return redirect(url_for('view_question', question_id=question_id))
+
+    return render_template('add_new_tag.html',
+                           page_title='Add new tag',
+                           button_title='Submit tag',
+                           question_id=question_id)
+
+
+@app.route('/comments/<comment_id>/delete', methods=['GET'])
+def del_comment(comment_id):
+    q_and_a_id = data_handler.get_q_and_a_id_from_comment(comment_id)
+    data_handler.delete_comment(comment_id)
+    return redirect(url_for('view_question', question_id=q_and_a_id[0]['question_id']))
+
+
+@app.route('/answer/<answer_id>/delete', methods=['GET'])
+def del_answer(answer_id):
+    question_id = data_handler.get_answer_data_by_answer_id(answer_id)[0]
+    data_handler.delete_answer(answer_id)
+    return redirect(url_for('view_question', question_id=question_id['question_id']))
+
+
+@app.route('/comments/<comment_id>/edit', methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    if request.method == 'POST':
+        comment = data_handler.get_comment(comment_id)[0]
+        comment['message'] = request.form.get('message')
+        comment['edited_count'] += 1
+        data_handler.edit_comment(comment)
+        return redirect(url_for('view_question', question_id=comment['question_id']))
+
+    comment = data_handler.get_comment(comment_id)[0]
+
+    return render_template('add_edit_question_answer_comments.html',
+                           page_title='Edit comment',
+                           button_title='Edit comment',
+                           comment=comment
+                           )
 
 
 if __name__ == '__main__':
