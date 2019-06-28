@@ -16,7 +16,7 @@
     <h1>Edit comment</h1>
 {%  endif %}
 <br>
-{% if question_id %}
+{% if question_id and not comment %}
     <form action="{{ url_for('new_question_comment', question_id=question_id) }}" method="post">
             <label for="message"> Comment:
             <br>
@@ -40,8 +40,8 @@
     </form>
 {%  endif %}
 
-{% if comment %}
-    <form action="{{ url_for('edit_comment', comment_id=comment.id) }}" method="post">
+{% if question_id and comment %}
+    <form action="{{ url_for('edit_comment', question_id=question_id, comment_id=comment.id) }}" method="post">
         <label for="message"> Comment:
             <br>
             <textarea name="message" id="message" rows="8" cols="70" required> {{ comment.message }}</textarea>

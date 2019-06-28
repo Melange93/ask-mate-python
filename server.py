@@ -36,7 +36,6 @@ def add_question():
 def view_question(question_id=None):
     answers = data_handler.get_answer_data_by_id(question_id)
     user_question = data_handler.get_question_data_by_id(question_id)[0]
-    #answer commantss half way
     answers_ids = []
     for answer in answers:
         for key, value in answer.items():
@@ -50,7 +49,6 @@ def view_question(question_id=None):
     for element in question_tag:
         tags_ids.append(element['tag_id'])
     tags_names = [data_handler.get_question_tags(id_) for id_ in tags_ids]
-    #answer_comments.append(data_handler.get_comments_for_answers(element[answer_id]))
     return render_template('question.html',
                            user_question=user_question,
                            answers=answers,
@@ -228,21 +226,22 @@ def del_answer(answer_id):
     return redirect(url_for('view_question', question_id=question_id['question_id']))
 
 
-@app.route('/comments/<comment_id>/edit', methods=['GET', 'POST'])
-def edit_comment(comment_id):
+@app.route('/<question_id>/comments/<comment_id>/edit', methods=['GET', 'POST'])
+def edit_comment(question_id=None, comment_id=None):
     if request.method == 'POST':
         comment = data_handler.get_comment(comment_id)[0]
         comment['message'] = request.form.get('message')
         comment['edited_count'] += 1
         data_handler.edit_comment(comment)
-        return redirect(url_for('view_question', question_id=comment['question_id']))
+        return redirect(url_for('view_question', question_id=question_id))
 
     comment = data_handler.get_comment(comment_id)[0]
 
     return render_template('add_edit_question_answer_comments.html',
                            page_title='Edit comment',
                            button_title='Edit comment',
-                           comment=comment
+                           comment=comment,
+                           question_id=question_id
                            )
 
 
