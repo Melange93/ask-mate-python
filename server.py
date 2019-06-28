@@ -144,7 +144,7 @@ def search():
     searched_string = request.args["searched_string"]
     q_results = data_handler.search_questions(searched_string)
     a_results = data_handler.search_answers(searched_string)
-    return render_template('search.html', q_results=q_results, a_results=a_results)
+    return render_template('search.html', q_results=q_results, a_results=a_results, searched_string=searched_string)
 
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])

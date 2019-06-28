@@ -215,6 +215,17 @@ def search_answers(cursor, searched_string):
 
 
 @database_common.connection_handler
+def search_the_question_of_an_answer(cursor, answer_id):
+    cursor.execute("""
+                    SELECT q.id, q.submission_time, q.view_number, q.vote_number, title, q.message, q.image
+                    FROM question AS q JOIN answer AS a ON q.id=a.question_id
+                    WHERE a.id = %(answer_id)s
+                    """,
+                   {'answer_id': answer_id})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def add_new_question_comment(cursor, question_comment):
     cursor.execute("""
                     INSERT INTO comment (id, question_id, message, submission_time, edited_count)
