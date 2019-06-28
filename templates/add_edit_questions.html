@@ -5,18 +5,28 @@
 {% endblock%}
 
 {% block content %}
-<h1>{{ 'Edit ' + question.title if question else 'Ask new question' }}</h1>
+<h1>
+    {{ 'Edit ' + question.title if question else 'Ask new question' }}
+</h1>
 <form action="{{ url_for('edit_question', question_id=question.id) if question else url_for('add_question') }}" method="post">
     <input id="id" name="id" type="hidden" value="{{ question.id if question }}">
     <input id="submission_time" name="submission_time" type="hidden" value="{{ question.submission_time if question }}">
     <input id="view_number" name="view_number" type="hidden" value="{{ question.view_number if question }}">
     <input id="vote_number" name="vote_number" type="hidden" value="{{ question.vote_number if question }}">
-    <label for="title"> Title: </label> <br />
-    <input name="title" type="text" id="title" minlength="8" value="{{ question['title'] if question }}"required/> <br />
-
-    <label for="message"> Message: </label> <br />
-    <textarea name="message" id="message" rows="8" cols="70" required>{{ question['message'] if question}}</textarea><br />
-
+    <label for="title">
+        <span class="label-text">Title:</span>
+    </label>
+    <br>
+    <input name="title" type="text" id="title" minlength="8" value="{{ question['title'] if question }}"required/>
+    <br>
+    <label for="message">
+        <span class="label-text">Message:</span>
+    </label>
+    <br>
+    <textarea name="message" id="message" rows="8" cols="70" required>
+        {{ question['message'] if question}}
+    </textarea>
+    <br>
     <input class="btn btn-outline-warning my-2 my-sm-0" type="submit" value="{{ button_title }}" />
 </form>
 {% endblock %}

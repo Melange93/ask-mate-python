@@ -10,7 +10,7 @@
 <br>
 <form action="{{ url_for('add_new_tag', question_id=question_id)}}" method="post">
     <label for="tag">
-        New tag name:
+        <span class="label-text">New tag name:</span>
         <br>
         <textarea name="tag_name" id="tag_name" rows="8" cols="70" required>{{ tag['tag_name'] if tag }}</textarea>
         <br>

@@ -7,34 +7,7 @@ body {
 h1, h2 {
     padding-top: 30px;
     padding-bottom: 30px;
-}
-
-#ask-mate {
-    background-color: rgba(255, 255, 255, 0.6);
-    height: 100%;
-    padding-bottom: 5%;
-}
-
-.bg-light {
-    background-color: #567A92!important;
-}
-
-#navbar-main-text, .btn-outline-warning, #nav-home, #nav-new-q {
-    color: #FDCC71;
-}
-
-.btn-outline-warning, .btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:hover {
-    border-color: #FDCC71;
-    background-color: #567A92;
-}
-
-.btn-outline-warning:focus {
-    box-shadow: 0 0 0 0.2rem rgba(253,204,113,.5);
-}
-
-.btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:hover {
-    color: #567A92;
-    background-color: #FDCC71;
+    font-weight: bold;
 }
 
 h2 {
@@ -66,23 +39,74 @@ td:hover {
     background-color: #E8D7C9;
 }
 
-.comment-header, .comment-time, .comment-edited , .tag {
-    font-weight: bold;
+label {
+    padding: 5px;
+    font-size: larger;
+    font-weight: bolder;
 }
 
-.comment-body, .comment-time, comment-edited  {
-    font-style: italic;
+.label-text {
+    font-size: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
-.tag {
-    text-align: left;
+input {
+    margin-bottom: 10px;
 }
 
 textarea{
+    margin-top: 10px;
     color: white;
     background-color: #567A92;
     border: 5px solid #A5C3D2;
     border-collapse: separate;
     border-radius: 15px;
 }
+
+#ask-mate {
+    background-color: rgba(255, 255, 255, 0.6);
+    height: 100%;
+    padding-bottom: 5%;
+}
+
+.bg-light {
+    background-color: #567A92!important;
+}
+
+#navbar-main-text, .btn-outline-warning, #nav-home, #nav-new-q {
+    color: #FDCC71;
+}
+
+.btn-outline-warning, .btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:hover {
+    border-color: #FDCC71;
+    background-color: #567A92;
+}
+
+.btn-outline-warning:focus {
+    box-shadow: 0 0 0 0.2rem rgba(253,204,113,.5);
+}
+
+.btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:hover {
+    color: #567A92;
+    background-color: #FDCC71;
+}
+
+
+.comment-header, .comment-time, .comment-edited , .tag {
+    font-weight: bold;
+}
+
+.comment-body, .comment-time, .comment-edited  {
+    font-style: italic;
+}
+
+.comment {
+    font-size: smaller;
+}
+
+.tag {
+    text-align: left;
+}
+
 

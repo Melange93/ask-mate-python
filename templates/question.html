@@ -40,7 +40,7 @@
         </td>
     </tr>
     {% for question_comment in question_comments %}
-        <tr>
+        <tr class="comment">
             <td colspan="6">
                 <span class="comment-header d-flex justify-content-start">Comment: </span>
                 <span class="comment-body">{{ question_comment.message }}</span>
@@ -124,7 +124,7 @@
         {% for comment_list in comments %}
             {% for comment in comment_list %}
                 {% if comment.answer_id == answer.id %}
-                    <tr>
+                    <tr class="comment">
                         <td colspan="7">
                             <span class="comment-header d-flex justify-content-start">Comment: </span>
                             <span class="comment-body">{{ comment.message }}</span>

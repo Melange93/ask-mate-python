@@ -5,26 +5,56 @@
 {% endblock%}
 
 {% block content %}
-<h1>{{ 'Edit ' + user_story.title if user_story else 'Add User Story' }}</h1>
+<h1>
+    {{ 'Edit ' + user_story.title if user_story else 'Add User Story' }}
+</h1>
 <form action="{{ url_for('story_update', story_id=user_story.id) if user_story else url_for('add_story') }}" method="post">
     <input id="id" name="id" type="hidden" value="{{ user_story.id if user_story }}">
-    <label for="title"> Story Title: </label> <br />
-    <input name="title" type="text" id="title" required minlength="5" value="{{ user_story.title if user_story }}"/> <br />
-    <label for="user_story"> User Story: </label> <br />
-    <textarea cols="40" name="user_story" id="user_story" rows="5" required>{{ user_story.user_story if user_story}}</textarea><br />
-    <label for="acceptance_criteria"> Acceptance criteria: </label> <br />
-    <textarea cols="40" name="acceptance_criteria" id="acceptance_criteria" rows="5" required>{{ user_story.acceptance_criteria if user_story}}</textarea><br />
-    <label for="business_value"> Business Value:  </label> <br>
-    <input name="business_value" type="text" id="business_value" min="100" max="1500" step="100" value="{{ user_story.business_value[0:4] if user_story else 500}}"/> <br />
-    <label for="estimation"> Estimation: </label> <br>
-    <input name="estimation" id="estimation" type="text" min="0.5" max="40" step="0.5" value="{{ user_story.estimation[:-1] if user_story else 2}}" /> <br /><br />
+    <label for="title">
+        <span class="label-text">Story Title:</span>
+    </label>
+    <br>
+    <input name="title" type="text" id="title" required minlength="5" value="{{ user_story.title if user_story }}"/>
+    <br>
+    <label for="user_story">
+        <span class="label-text">User Story:</span>
+    </label>
+    <br>
+    <textarea cols="40" name="user_story" id="user_story" rows="5" required>
+        {{ user_story.user_story if user_story}}
+    </textarea>
+    <br>
+    <label for="acceptance_criteria">
+        <span class="label-text">Acceptance criteria: </span>
+    </label>
+    <br>
+    <textarea cols="40" name="acceptance_criteria" id="acceptance_criteria" rows="5" required>
+        {{ user_story.acceptance_criteria if user_story}}
+    </textarea>
+    <br>
+    <label for="business_value">
+        <span class="label-text">Business Value: </span>
+    </label>
+    <br>
+    <input name="business_value" type="text" id="business_value" min="100" max="1500" step="100" value="{{ user_story.business_value[0:4] if user_story else 500}}"/>
+    <br>
+    <label for="estimation">
+        <span class="label-text">Estimation: </span>
+    </label>
+    <br>
+    <input name="estimation" id="estimation" type="text" min="0.5" max="40" step="0.5" value="{{ user_story.estimation[:-1] if user_story else 2}}" />
+    <br>
+    <br>
     {% if user_story %}
-    <label for="status"> Status: </label> <br>
-    <select name="status" id="status">
-    {% for status in statuses %}
-        <option value="{{status}}" {{'selected' if selected_status==status }}>{{status}}</option>
-    {% endfor %}
-    </select><br>
+        <label for="status">
+            <span class="label-text">Status: </span>
+        </label>
+        <br>
+        <select name="status" id="status">
+            {% for status in statuses %}
+                <option value="{{status}}" {{'selected' if selected_status==status }}>{{status}}</option>
+            {% endfor %}
+        </select><br>
     {% endif %}
     <br>
     <input type="submit" value="{{ button_title }}" />
