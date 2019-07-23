@@ -15,6 +15,7 @@ ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS pk_ques
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_question_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.tag DROP CONSTRAINT IF EXISTS pk_tag_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_tag_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT IF EXISTS pk_user_id CASCADE;
 
 DROP TABLE IF EXISTS public.question;
 DROP SEQUENCE IF EXISTS public.question_id_seq;
@@ -48,6 +49,17 @@ CREATE TABLE comment (
     message text,
     submission_time timestamp without time zone,
     edited_count integer
+);
+
+DROP TABLE IF EXISTS public.user;
+DROP SEQUENCE IF EXISTS public.user_id_seq;
+CREATE TABLE users (
+    id serial NOT NULL PRIMARY KEY,
+    registration_time timestamp without time zone,
+    username text UNIQUE,
+    email text UNIQUE,
+    password text,
+    role text DEFAULT 'user'
 );
 
 
@@ -126,3 +138,6 @@ SELECT pg_catalog.setval('tag_id_seq', 3, true);
 INSERT INTO question_tag VALUES (0, 1);
 INSERT INTO question_tag VALUES (1, 3);
 INSERT INTO question_tag VALUES (2, 3);
+
+INSERT INTO users VALUES (1, '2017-04-28 08:29:00', 'admin', 'admin@admin.admin', '$2b$12$NvGn0FaCGzdAgTbSe7zu7eRY2CgkpV3bCEIzqhZ2837cTk3M1ewqm','admin');
+INSERT INTO users VALUES (2, '2017-04-28 08:29:00', 'testuser', 'user@user.user', '$2b$12$RCY1YqCG7E1mRwXYy58Ux.LDK7202QWhSgnHZexd2SacOJnGRqdCm','user');
