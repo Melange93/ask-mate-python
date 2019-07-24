@@ -382,3 +382,18 @@ def edit_comment(cursor, comment):
                     comment['edited_count'],
                     comment['id'],)
                    )
+
+@database_common.connection_handler
+def add_new_user(cursor, user):
+    cursor.execute("""
+                    INSERT INTO users (id, registration_time, username, email, password, role)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                    """,
+                   (user['id'],
+                    user['registration_time'],
+                    user['username'],
+                    user['email'],
+                    user['password'],
+                    user['role'],
+                        )
+                    )

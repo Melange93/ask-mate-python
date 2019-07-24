@@ -244,6 +244,24 @@ def edit_comment(question_id=None, comment_id=None):
                            question_id=question_id
                            )
 
+@app.route('/registration', methods=['POST', 'GET'])
+def registration():
+    if request.method == 'POST':
+        user = {
+            'id': util.key_generator(),
+            'registration_time': util.get_current_datetime(),
+            'username': request.form.get('username'),
+            'email': request.form.get('email'),
+            'password': util.hash_password(request.form.get('password')),
+            'role': 'user'
+        }
+        data_handler.add_new_user(user)
+        return redirect(url_for('route_list'))
+
+    return render_template('registration.html',
+                           page_title='Registration',
+                           button_title='Registrate')
+
 
 if __name__ == '__main__':
     app.run(
