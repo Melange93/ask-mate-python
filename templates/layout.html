@@ -28,6 +28,16 @@
                         </li>
                     </ul>
                 </div>
+                {% if username %}
+                    <span>
+                        Hello {{ username }}!
+                    </span>
+                {% else %}
+                    <span>
+                        Hello Guest!
+                    </span>
+                {% endif %}
+
                 <form action="{{ url_for('search', searched_string=searched_string)}}" method="get" class="form-inline">
                     <input name=searched_string class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
