@@ -397,3 +397,26 @@ def add_new_user(cursor, user):
                     user['role'],
                         )
                     )
+
+@database_common.connection_handler
+def get_user_data(cursor, user):
+    cursor.execute("""
+                    SELECT *
+                    FROM users
+                    WHERE username = %s;
+                   """,
+                   (user['username'],
+                        )
+                   )
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_password(cursor, user):
+    cursor.execute("""
+                    SELECT password
+                    FROM users
+                    WHERE username = %s;
+                    """,
+                   (user['username'],)
+                   )
+    return cursor.fetchall()

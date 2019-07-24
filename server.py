@@ -1,15 +1,20 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, escape
 import data_handler
 import util
+import os
 
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 
 @app.route('/')
 def show_top_5_questions():
     LIMIT_NUMBER = 5
     user_questions = data_handler.get_limited_questions(LIMIT_NUMBER)
+    if 'user' in session:
+
+        return 'Logged in as %s' % escape(session['user'])
     return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER)
 
 
@@ -261,6 +266,35 @@ def registration():
     return render_template('registration.html',
                            page_title='Registration',
                            button_title='Registrate')
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        user = {
+            'username': request.form.get('username'),
+            'password': request.form.get('password')
+        }
+        hashed_password = data_handler.get_password(user)
+        verified = util.verify_password(user['username'], hashed_password[0]['password'])
+        if verified:
+            user_all_data = data_handler.get_user_data(user)
+            session['user'] = user_all_data[0]['username']
+
+            return redirect(url_for('route_list'))
+
+        else:
+            return redirect(url_for('route_list'))
+    return render_template('login.html',
+                           page_title='Login',
+                           button_title='Login')
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    print(session['user'])
+    session.pop('user', None)
+    return redirect(url_for('route_list'))
 
 
 if __name__ == '__main__':
