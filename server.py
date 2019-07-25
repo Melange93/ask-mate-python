@@ -110,32 +110,34 @@ def edit_question(question_id):
                            )
 
 
-@app.route('/answer/<answer_id>/vote-<down>', methods=['POST'])
-@app.route('/answer/<answer_id>/vote-<up>', methods=['POST'])
 @app.route('/question/<question_id>/vote-<down>', methods=['POST'])
 @app.route('/question/<question_id>/vote-<up>', methods=['POST'])
-def vote(question_id=None, answer_id=None, up=None):
+def vote_question(question_id=None, up=None):
     SINGLE_VOTE = 1
 
-    if question_id and not answer_id:
-        question = data_handler.get_vote_number_question(question_id)[0]
-        if up == "up":
-            question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
-            data_handler.set_vote_question(question['id'], question['vote_number'])
-        else:
-            question['vote_number'] = int(question['vote_number']) - SINGLE_VOTE
-            data_handler.set_vote_question(question['id'], question['vote_number'])
-        return redirect(url_for('view_question', question_id=question_id))
+    question = data_handler.get_vote_number_question(question_id)[0]
+    if up == "up":
+        question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
+        data_handler.set_vote_question(question['id'], question['vote_number'])
+    else:
+        question['vote_number'] = int(question['vote_number']) - SINGLE_VOTE
+        data_handler.set_vote_question(question['id'], question['vote_number'])
+    return redirect(url_for('view_question', question_id=question_id))
 
-    if answer_id and not question_id:
-        answer = data_handler.get_vote_number_answer(answer_id)[0]
-        if up == "up":
-            answer['vote_number'] = int(answer['vote_number']) + SINGLE_VOTE
-            data_handler.set_vote_answer(answer['id'], answer['vote_number'])
-        else:
-            answer['vote_number'] = int(answer['vote_number']) - SINGLE_VOTE
-            data_handler.set_vote_answer(answer['id'], answer['vote_number'])
-        return redirect(url_for('view_question', question_id=answer['question_id']))
+
+@app.route('/answer/<answer_id>/vote-<down>', methods=['POST'])
+@app.route('/answer/<answer_id>/vote-<up>', methods=['POST'])
+def vote_answer(answer_id=None, up=None):
+    SINGLE_VOTE = 1
+
+    answer = data_handler.get_vote_number_answer(answer_id)[0]
+    if up == "up":
+        answer['vote_number'] = int(answer['vote_number']) + SINGLE_VOTE
+        data_handler.set_vote_answer(answer['id'], answer['vote_number'])
+    else:
+        answer['vote_number'] = int(answer['vote_number']) - SINGLE_VOTE
+        data_handler.set_vote_answer(answer['id'], answer['vote_number'])
+    return redirect(url_for('view_question', question_id=answer['question_id']))
 
 
 @app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
@@ -239,7 +241,13 @@ def add_new_tag(question_id = None):
 def del_comment(comment_id):
     q_and_a_id = data_handler.get_q_and_a_id_from_comment(comment_id)
     data_handler.delete_comment(comment_id)
-    return redirect(url_for('view_question', question_id=q_and_a_id[0]['question_id']))
+    if q_and_a_id[0]['answer_id']:
+        answer_id = q_and_a_id[0]['answer_id']
+        question_id = data_handler.get_question_id_from_answer_id(answer_id)
+        question_id = question_id[0]['id']
+    else:
+        question_id = q_and_a_id[0]['question_id']
+    return redirect(url_for('view_question', question_id=question_id))
 
 
 @app.route('/answer/<answer_id>/delete', methods=['GET'])
@@ -312,6 +320,17 @@ def logout():
     # remove the username from the session if it's there
     session.pop('user', None)
     return redirect(url_for('route_list'))
+
+
+@app.route('/listallusers')
+def list_all_users():
+    if not session or session['user'] != "admin":
+        return redirect(url_for('route_list'))
+    if session['user'] == "admin":
+        all_users_data = data_handler.get_all_users()
+        return render_template('listallusers.html',
+                               page_title='List of all users',
+                               all_users_data=all_users_data)
 
 
 if __name__ == '__main__':
