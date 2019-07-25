@@ -1,0 +1,91 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock%}
+
+{% block content %}
+
+<div class="main">
+    <br><br>
+    <h1>{{ users_questions[0].username }}'s questions</h1>
+    <table class="center">
+        <thead>
+            <tr>
+                <th>Question's title</th>
+                <th>Submission time</th>
+                <th>View Number</th>
+                <th>Vote Number</th>
+             </tr>
+        </thead>
+
+    {% for user_question in users_questions %}
+        <tr>
+            <td><a href="{{ url_for('view_question', question_id=user_question.id) }}">{{ user_question.title }}</a></td>
+            <td>{{ user_question.submission_time}}</td>
+            <td>{{ user_question.view_number }}</td>
+            <td>{{ user_question.vote_number }}</td>
+        </tr>
+    {% endfor %}
+
+    </table>
+    <h1>{{ users_questions[0].username }}'s answers</h1>
+    <table class="center">
+        <thead>
+            <tr>
+                <th>Answer</th>
+                <th>Submission time</th>
+                <th>Vote Number</th>
+                <th>Question's title</th>
+             </tr>
+        </thead>
+
+    {% for users_answer in users_answers %}
+        <tr>
+            <td>{{ users_answer.message }}</td>
+            <td>{{ users_answer.submission_time}}</td>
+            <td>{{ users_answer.vote_number }}</td>
+            <td><a href="{{ url_for('view_question', question_id=users_answer.question_id) }}">{{ users_answer.title }}</a></td>
+        </tr>
+    {% endfor %}
+
+    </table>
+
+    <h1>{{ users_questions[0].username }}'s comments</h1>
+    <table class="center">
+        <thead>
+            <tr>
+                <th>Comment</th>
+                <th>Submission time</th>
+                <th>Edited Count</th>
+                <th>Related Question</th>
+             </tr>
+        </thead>
+
+    {% for users_comment in users_comments %}
+        <tr>
+            <td>{{ users_comment.message }}</td>
+            <td>{{ users_comment.submission_time}}</td>
+            <td>{{ users_comment.edited_count }}</td>
+
+            {%  if users_comment.question_id %}
+            <td><a href="{{ url_for('view_question', question_id=users_comment.question_id) }}">
+                {{ users_comment.title }}</a></td>
+            {% endif %}
+
+            {%  if users_comment.answer_id %}
+            <td><a href="{{ url_for('view_question', question_id=users_comment.needed) }}">
+                {{ users_comment.title }}</a></td>
+            {% endif %}
+
+
+        </tr>
+    {% endfor %}
+
+    </table>
+ <br><br>
+<form action="{{ url_for('list_all_users') }}">
+    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Back</button>
+</form>
+
+{% endblock%}

@@ -23,7 +23,7 @@
 
     {% for user_record in all_users_data %}
         <tr>
-            <td>{{ user_record.username }}</td>
+            <td><a href="{{ url_for('user_page', user_id=user_record.id) }}">{{ user_record.username }}</a></td>
             <td>{{ user_record.registration_time}}</td>
             <td>{{ user_record.email }}</td>
             <td>{{ user_record.role }}</td>

@@ -452,3 +452,48 @@ def get_question_id_from_answer_id(cursor, answer_id):
                     """,
                    (answer_id,))
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_users_questions(cursor, user_id):
+    cursor.execute("""
+                    SELECT username, title, submission_time, view_number, vote_number, question.id
+                    FROM question
+                    INNER JOIN users
+                    ON (users.id=question.user_id)
+                    WHERE user_id = %s;
+                   """,
+                   (user_id,))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_users_answers_and_question_title(cursor, user_id):
+    cursor.execute("""
+                    SELECT answer.message, answer.submission_time, answer.vote_number, question_id, title
+                    FROM answer
+                    LEFT JOIN question
+                    ON (answer.question_id=question.id)
+                    WHERE answer.user_id = %s;
+                   """,
+                   (user_id,))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_users_comments_and_question_title(cursor, user_id):
+    cursor.execute("""
+                    SELECT comment.message, comment.submission_time, edited_count, 
+                    comment.question_id, comment.answer_id, question.title, answer.question_id as "needed"
+                    FROM comment
+                    FULL JOIN question
+                    ON (comment.question_id=question.id)
+                    FULL JOIN answer
+                    ON (comment.answer_id=answer.id)
+                    WHERE comment.user_id = %s;
+                   """,
+                   (user_id,))
+    return cursor.fetchall()
+
+
+

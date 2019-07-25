@@ -316,6 +316,21 @@ def list_all_users():
                                all_users_data=all_users_data)
 
 
+@app.route('/user/<int:user_id>')
+def user_page(user_id):
+    #if not session or session['user'] != "admin":
+     #   return redirect(url_for('route_list'))
+    users_questions = data_handler.get_users_questions(user_id)
+    users_answers = data_handler.get_users_answers_and_question_title(user_id)
+    users_comments = data_handler.get_users_comments_and_question_title(user_id)
+    return render_template('user_page.html',
+                           page_title='User History',
+                           users_questions=users_questions,
+                           users_answers=users_answers,
+                           users_comments=users_comments
+                           )
+
+
 if __name__ == '__main__':
     app.run(
         host='127.0.0.1',
