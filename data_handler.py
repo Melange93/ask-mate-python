@@ -420,3 +420,12 @@ def get_password(cursor, user):
                    (user['username'],)
                    )
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_users(cursor):
+    cursor.execute("""
+                    SELECT *
+                    FROM users;
+                   """)
+    return  cursor.fetchall()

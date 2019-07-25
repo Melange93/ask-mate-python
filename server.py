@@ -297,6 +297,17 @@ def logout():
     return redirect(url_for('route_list'))
 
 
+@app.route('/listallusers')
+def list_all_users():
+    if not session or session['user'] != "admin":
+        return redirect(url_for('route_list'))
+    if session['user'] == "admin":
+        all_users_data = data_handler.get_all_users()
+        return render_template('listallusers.html',
+                               page_title='List of all users',
+                               all_users_data=all_users_data)
+
+
 if __name__ == '__main__':
     app.run(
         host='127.0.0.1',

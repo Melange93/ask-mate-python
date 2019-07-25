@@ -26,6 +26,13 @@
                         <li class="nav-item">
                             <a class="nav-link" id="nav-new-q" href="{{ url_for('add_question')}}">Ask new question</a>
                         </li>
+                        {% if session['user'] == "admin" %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="nav-new-q" href="{{ url_for('list_all_users')}}">List all users</a>
+                            </li>
+                        {% endif %}
+
                     </ul>
                 </div>
                 <form action="{{ url_for('search', searched_string=searched_string)}}" method="get" class="form-inline">
