@@ -23,7 +23,7 @@ def get_current_timestamp():
 
 
 def get_current_datetime():
-    current_datetime = datetime.datetime.now()
+    current_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     return current_datetime
 
 
