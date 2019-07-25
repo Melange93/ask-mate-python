@@ -26,17 +26,25 @@
                         <li class="nav-item">
                             <a class="nav-link" id="nav-new-q" href="{{ url_for('add_question')}}">Ask new question</a>
                         </li>
+                        {% if session['user'] == "admin" %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="nav-new-q" href="{{ url_for('list_all_users')}}">List all users</a>
+                            </li>
+                        {% endif %}
+
                     </ul>
                 </div>
-                {% if username %}
-                    <span id="hello">
-                        Hello {{ username }}!
+                {% if session['user'] %}
+                    <span>
+                        Hello {{ session['user'] }}!
                     </span>
                 {% else %}
-                    <span id="hello">
+                    <span>
                         Hello Guest!
                     </span>
                 {% endif %}
+
                 <form action="{{ url_for('search', searched_string=searched_string)}}" method="get" class="form-inline">
                     <div class="input-group">
                         <input name=searched_string class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -45,7 +53,7 @@
                         </span>
                     </div>
                 </form>
-                {% if username %}
+                {% if session['user'] %}
                     <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('logout') }}">Logout</a></button>
                 {% else %}
                     <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('registration') }}">Registration</a></button>

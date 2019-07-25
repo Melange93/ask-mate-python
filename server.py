@@ -13,8 +13,7 @@ def show_top_5_questions():
     LIMIT_NUMBER = 5
     user_questions = data_handler.get_limited_questions(LIMIT_NUMBER)
     if 'user' in session:
-        username = escape(session['user'])
-        return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER, username=username)
+        return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER)
     return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER)
 
 
@@ -46,14 +45,24 @@ def view_question(question_id=None):
         for key, value in answer.items():
             if key == 'id':
                 answers_ids.append(value)
-    comments = [data_handler.get_comments_for_answers(id_) for id_ in answers_ids]
 
+    comments = [data_handler.get_comments_for_answers(id_) for id_ in answers_ids]
     question_comments = data_handler.get_comments_for_question(question_id)
+
     question_tag = data_handler.get_tags(question_id)
     tags_ids = []
     for element in question_tag:
         tags_ids.append(element['tag_id'])
     tags_names = [data_handler.get_question_tags(id_) for id_ in tags_ids]
+    if 'user' in session:
+        return render_template('question.html',
+                               user_question=user_question,
+                               answers=answers,
+                               question_comments=question_comments,
+                               tags_names=tags_names,
+                               comments=comments
+                               )
+
     return render_template('question.html',
                            user_question=user_question,
                            answers=answers,
@@ -105,32 +114,34 @@ def edit_question(question_id):
                            )
 
 
-@app.route('/answer/<answer_id>/vote-<down>', methods=['POST'])
-@app.route('/answer/<answer_id>/vote-<up>', methods=['POST'])
 @app.route('/question/<question_id>/vote-<down>', methods=['POST'])
 @app.route('/question/<question_id>/vote-<up>', methods=['POST'])
-def vote(question_id=None, answer_id=None, up=None):
+def vote_question(question_id=None, up=None):
     SINGLE_VOTE = 1
 
-    if question_id and not answer_id:
-        question = data_handler.get_vote_number_question(question_id)[0]
-        if up == "up":
-            question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
-            data_handler.set_vote_question(question['id'], question['vote_number'])
-        else:
-            question['vote_number'] = int(question['vote_number']) - SINGLE_VOTE
-            data_handler.set_vote_question(question['id'], question['vote_number'])
-        return redirect(url_for('view_question', question_id=question_id))
+    question = data_handler.get_vote_number_question(question_id)[0]
+    if up == "up":
+        question['vote_number'] = int(question['vote_number']) + SINGLE_VOTE
+        data_handler.set_vote_question(question['id'], question['vote_number'])
+    else:
+        question['vote_number'] = int(question['vote_number']) - SINGLE_VOTE
+        data_handler.set_vote_question(question['id'], question['vote_number'])
+    return redirect(url_for('view_question', question_id=question_id))
 
-    if answer_id and not question_id:
-        answer = data_handler.get_vote_number_answer(answer_id)[0]
-        if up == "up":
-            answer['vote_number'] = int(answer['vote_number']) + SINGLE_VOTE
-            data_handler.set_vote_answer(answer['id'], answer['vote_number'])
-        else:
-            answer['vote_number'] = int(answer['vote_number']) - SINGLE_VOTE
-            data_handler.set_vote_answer(answer['id'], answer['vote_number'])
-        return redirect(url_for('view_question', question_id=answer['question_id']))
+
+@app.route('/answer/<answer_id>/vote-<down>', methods=['POST'])
+@app.route('/answer/<answer_id>/vote-<up>', methods=['POST'])
+def vote_answer(answer_id=None, up=None):
+    SINGLE_VOTE = 1
+
+    answer = data_handler.get_vote_number_answer(answer_id)[0]
+    if up == "up":
+        answer['vote_number'] = int(answer['vote_number']) + SINGLE_VOTE
+        data_handler.set_vote_answer(answer['id'], answer['vote_number'])
+    else:
+        answer['vote_number'] = int(answer['vote_number']) - SINGLE_VOTE
+        data_handler.set_vote_answer(answer['id'], answer['vote_number'])
+    return redirect(url_for('view_question', question_id=answer['question_id']))
 
 
 @app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
@@ -167,21 +178,28 @@ def search():
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def new_question_comment(question_id=None):
-    if request.method == 'POST':
-        question_comment = {
-            'id': util.key_generator(),
-            'question_id': question_id,
-            'message': request.form.get('message'),
-            'submission_time': util.get_current_datetime(),
-            'edited_count': '0'
-             }
-        data_handler.add_new_question_comment(question_comment)
-        return redirect(url_for('view_question', question_id=question_id))
+    if 'user' in session:
+        username = escape(session['user'])
+        get_user_id = data_handler.get_userid_by_username(str(username))
 
-    return render_template('add_edit_question_answer_comments.html',
+        if request.method == 'POST':
+            question_comment = {
+                'id': util.key_generator(),
+                'question_id': question_id,
+                'message': request.form.get('message'),
+                'submission_time': util.get_current_datetime(),
+                'edited_count': '0',
+                'user_id': get_user_id[0]['id']
+                 }
+            data_handler.add_new_question_comment(question_comment)
+            return redirect(url_for('view_question', question_id=question_id))
+
+        return render_template('add_edit_question_answer_comments.html',
                            page_title='Add comment to question',
                            button_title='Submit comment',
                            question_id=question_id)
+
+    return redirect(url_for('view_question', question_id=question_id))
 
 
 @app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
@@ -227,7 +245,13 @@ def add_new_tag(question_id = None):
 def del_comment(comment_id):
     q_and_a_id = data_handler.get_q_and_a_id_from_comment(comment_id)
     data_handler.delete_comment(comment_id)
-    return redirect(url_for('view_question', question_id=q_and_a_id[0]['question_id']))
+    if q_and_a_id[0]['answer_id']:
+        answer_id = q_and_a_id[0]['answer_id']
+        question_id = data_handler.get_question_id_from_answer_id(answer_id)
+        question_id = question_id[0]['id']
+    else:
+        question_id = q_and_a_id[0]['question_id']
+    return redirect(url_for('view_question', question_id=question_id))
 
 
 @app.route('/answer/<answer_id>/delete', methods=['GET'])
@@ -298,9 +322,19 @@ def login():
 @app.route('/logout')
 def logout():
     # remove the username from the session if it's there
-    print(session['user'])
     session.pop('user', None)
     return redirect(url_for('route_list'))
+
+
+@app.route('/listallusers')
+def list_all_users():
+    if not session or session['user'] != "admin":
+        return redirect(url_for('route_list'))
+    if session['user'] == "admin":
+        all_users_data = data_handler.get_all_users()
+        return render_template('listallusers.html',
+                               page_title='List of all users',
+                               all_users_data=all_users_data)
 
 
 if __name__ == '__main__':

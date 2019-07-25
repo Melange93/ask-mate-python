@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock%}
+
+{% block content %}
+
+<div class="main">
+    <br><br>
+    <table class="center">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Registered</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Number of questions</th>
+                <th>Number of answers</th>
+                <th>Number of comments</th>
+            </tr>
+        </thead>
+
+    {% for user_record in all_users_data %}
+        <tr>
+            <td>{{ user_record.username }}</td>
+            <td>{{ user_record.registration_time}}</td>
+            <td>{{ user_record.email }}</td>
+            <td>{{ user_record.role }}</td>
+            <td>{{ user_record.no_of_questions }}</td>
+            <td>{{ user_record.no_of_answers }}</td>
+            <td>{{ user_record.no_of_comments }}</td>
+        </tr>
+    {% endfor %}
+
+</table>
+ <br><br>
+<form action="{{ url_for('route_list') }}">
+    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Back</button>
+</form>
+
+{% endblock%}
