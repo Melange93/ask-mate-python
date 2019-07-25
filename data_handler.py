@@ -275,7 +275,9 @@ def get_comments_for_question(cursor, question_id):
 @database_common.connection_handler
 def get_comments_for_answers(cursor, answer_id):
     cursor.execute("""
-                    SELECT * FROM comment
+                    SELECT * 
+                    FROM comment
+                    JOIN users ON (comment.user_id=users.id)
                     WHERE answer_id = %s ORDER BY submission_time ASC;
                    """,
                    (answer_id,)

@@ -41,7 +41,7 @@
     </tr>
     {% for question_comment in question_comments %}
         <tr class="comment">
-            {% if username == question_comment.username %}
+            {% if session['user'] == question_comment.username %}
                 <td colspan="6">
                     <span class="comment-header d-flex justify-content-start">Comment: </span>
                     <span class="comment-body">{{ question_comment.message }}</span>
@@ -81,7 +81,7 @@
     </tr>
 </table>
 <br>
-{% if username %}
+{% if session['user'] %}
     <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_question', question_id=user_question.id)}} ">Edit question</a>
     <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_question_comment', question_id=user_question.id)}} ">Add comment to question</a>
     <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('add_new_tag', question_id=user_question.id)}}">Add new tag</a>
@@ -137,14 +137,14 @@
         {% for comment_list in comments %}
             {% for comment in comment_list %}
                 {% if comment.answer_id == answer.id %}
-                    {% if session['user'] %}
+                    {% if session['user'] == comment.username %}
                         <tr class="comment">
                             <td colspan="7">
                                 <span class="comment-header d-flex justify-content-start">Comment: </span>
                                 <span class="comment-body">{{ comment.message }}</span>
                                 <span class="comment-time d-flex justify-content-end">{{ comment.submission_time }}</span>
                                 <span class="comment-edited d-flex justify-content-end">Edited count: {{ comment.edited_count }}</span>
-                                <span class="comment-edited d-flex justify-content-end">Commit by: {{ comment.user_id }}</span>
+                                <span class="comment-edited d-flex justify-content-end">Commit by: {{ comment.username }}</span>
                             </td>
                             <td>
                                 <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_comment', question_id=user_question.id, comment_id=comment.id)}}">Edit</a>
@@ -161,7 +161,7 @@
                                 <span class="comment-body">{{ comment.message }}</span>
                                 <span class="comment-time d-flex justify-content-end">{{ comment.submission_time }}</span>
                                 <span class="comment-edited d-flex justify-content-end">Edited count: {{ comment.edited_count }}</span>
-                                <span class="comment-edited d-flex justify-content-end">Commit by: {{ comment.user_id }}</span>
+                                <span class="comment-edited d-flex justify-content-end">Commit by: {{ comment.username }}</span>
                             </td>
                         </tr>
                     {% endif %}
