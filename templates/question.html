@@ -92,10 +92,12 @@
  {% endif %}
 <br>
 <h2>Answer:</h2>
-<p>
-    <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer', question_id=user_question.id) }}">
-        Add a new answer</a>
-</p>
+{% if session['user'] %}
+    <p>
+        <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer', question_id=user_question.id) }}">
+            Add a new answer</a>
+    </p>
+{% endif %}
 <table class="center">
     <thead>
         <tr>
@@ -104,8 +106,8 @@
             <th>Vote number</th>
             <th>Image</th>
             <th colspan="2">Vote</th>
-            <th>Edit</th>
             <th>Add</th>
+            <th>Edit</th>
             <th>Delete</th>
         </tr>
     </thead>
@@ -127,10 +129,10 @@
                  </form>
             </td>
             <td>
-                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_answer', answer_id=answer.id)}}">Edit answer</a>
-            </td>
-             <td>
                 <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer_comment', answer_id=answer.id)}}">Add comment</a>
+            </td>
+            <td>
+                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_answer', answer_id=answer.id)}}">Edit answer</a>
             </td>
             <td>
                 <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_answer', answer_id=answer.id)}}
