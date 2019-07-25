@@ -29,15 +29,14 @@
                     </ul>
                 </div>
                 {% if username %}
-                    <span>
+                    <span id="hello">
                         Hello {{ username }}!
                     </span>
                 {% else %}
-                    <span>
+                    <span id="hello">
                         Hello Guest!
                     </span>
                 {% endif %}
-
                 <form action="{{ url_for('search', searched_string=searched_string)}}" method="get" class="form-inline">
                     <div class="input-group">
                         <input name=searched_string class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

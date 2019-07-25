@@ -65,14 +65,20 @@ def view_question(question_id=None):
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id=None):
-    if request.method == 'POST':
-        util.add_answer_wrapper(question_id)
-        return redirect(url_for('view_question', question_id=question_id))
+    if session:
+        username = escape(session['user'])
+        user_id_raw = data_handler.get_userId_by_username(username)
+        user_id = user_id_raw[0]['id']
 
-    return render_template('add_edit_answer.html',
-                           page_title='Add answer',
-                           button_title='Submit answer',
-                           question_id=question_id)
+        if request.method == 'POST':
+            answer_id = util.add_answer_wrapper(question_id, user_id)
+            return redirect(url_for('view_question', question_id=question_id, answer_id=answer_id))
+
+        return render_template('add_edit_answer.html',
+                               page_title='Add answer',
+                               button_title='Submit answer',
+                               question_id=question_id)
+    return redirect(url_for('route_list'))
 
 
 @app.route('/question/<string:question_id>/edit', methods=['GET', 'POST'])
