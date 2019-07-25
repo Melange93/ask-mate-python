@@ -42,8 +42,13 @@
                     <input name=searched_string class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
                 </form>
-                <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('registration') }}">Registration</a></button>
-                <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('login') }}">Login</a></button>
+                {% if username %}
+                    <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('logout') }}">Logout</a></button>
+                {% else %}
+                    <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('registration') }}">Registration</a></button>
+                    <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('login') }}">Login</a></button>
+                {% endif %}
+
             </nav>
         </div>
         <div id="ask-mate" class="mx-5 px-3">
