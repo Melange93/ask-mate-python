@@ -420,3 +420,35 @@ def get_password(cursor, user):
                    (user['username'],)
                    )
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_users(cursor):
+    cursor.execute("""
+                    SELECT users.id, registration_time, username, email, role, 
+                    COUNT(question.user_id) AS "no_of_questions",
+                    COUNT(answer.user_id) AS "no_of_answers",
+                    COUNT(comment.user_id) AS "no_of_comments"
+                    FROM users
+                    LEFT JOIN question
+                    ON (users.id=question.user_id)
+                    LEFT JOIN answer
+                    ON (users.id=answer.user_id)
+                    LEFT JOIN comment
+                    ON (users.id=comment.user_id)
+                    GROUP BY users.id;
+                   """)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_id_from_answer_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT question.id
+                    FROM question
+                    INNER JOIN answer
+                    ON (question.id=answer.question_id)
+                    WHERE answer.id=%s;
+                    """,
+                   (answer_id,))
+    return cursor.fetchall()
