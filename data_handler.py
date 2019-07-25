@@ -108,7 +108,8 @@ def get_question_data_by_id(cursor, id_):
 @database_common.connection_handler
 def get_answer_data_by_id(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM answer
+                    SELECT * FROM answer AS a
+                    JOIN users AS u ON a.user_id=u.id
                     WHERE question_id = %s ORDER BY submission_time ASC;
                    """,
                    (id_,)
