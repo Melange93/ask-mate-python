@@ -54,6 +54,17 @@ def view_question(question_id=None):
     for element in question_tag:
         tags_ids.append(element['tag_id'])
     tags_names = [data_handler.get_question_tags(id_) for id_ in tags_ids]
+    if 'user' in session:
+        username = escape(session['user'])
+        return render_template('question.html',
+                               user_question=user_question,
+                               answers=answers,
+                               question_comments=question_comments,
+                               tags_names=tags_names,
+                               comments=comments,
+                               username=username
+                               )
+
     return render_template('question.html',
                            user_question=user_question,
                            answers=answers,
@@ -161,21 +172,28 @@ def search():
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def new_question_comment(question_id=None):
-    if request.method == 'POST':
-        question_comment = {
-            'id': util.key_generator(),
-            'question_id': question_id,
-            'message': request.form.get('message'),
-            'submission_time': util.get_current_datetime(),
-            'edited_count': '0'
-             }
-        data_handler.add_new_question_comment(question_comment)
-        return redirect(url_for('view_question', question_id=question_id))
+    if 'user' in session:
+        username = escape(session['user'])
+        get_user_id = data_handler.get_userid_by_username(str(username))
 
-    return render_template('add_edit_question_answer_comments.html',
+        if request.method == 'POST':
+            question_comment = {
+                'id': util.key_generator(),
+                'question_id': question_id,
+                'message': request.form.get('message'),
+                'submission_time': util.get_current_datetime(),
+                'edited_count': '0',
+                'user_id': get_user_id[0]['id']
+                 }
+            data_handler.add_new_question_comment(question_comment)
+            return redirect(url_for('view_question', question_id=question_id))
+
+        return render_template('add_edit_question_answer_comments.html',
                            page_title='Add comment to question',
                            button_title='Submit comment',
                            question_id=question_id)
+
+    return redirect(url_for('view_question', question_id=question_id))
 
 
 @app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
@@ -292,7 +310,6 @@ def login():
 @app.route('/logout')
 def logout():
     # remove the username from the session if it's there
-    print(session['user'])
     session.pop('user', None)
     return redirect(url_for('route_list'))
 

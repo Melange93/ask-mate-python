@@ -229,14 +229,15 @@ def search_the_question_of_an_answer(cursor, answer_id):
 @database_common.connection_handler
 def add_new_question_comment(cursor, question_comment):
     cursor.execute("""
-                    INSERT INTO comment (id, question_id, message, submission_time, edited_count)
-                    VALUES (%s, %s, %s, %s, %s)
+                    INSERT INTO comment (id, question_id, message, submission_time, edited_count, user_id)
+                    VALUES (%s, %s, %s, %s, %s, %s)
                     """,
                    (question_comment['id'],
                     question_comment['question_id'],
                     question_comment['message'],
                     question_comment['submission_time'],
                     question_comment['edited_count'],
+                    question_comment['user_id'],
                         )
                     )
 
@@ -410,6 +411,7 @@ def get_user_data(cursor, user):
                    )
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_password(cursor, user):
     cursor.execute("""
@@ -418,5 +420,50 @@ def get_password(cursor, user):
                     WHERE username = %s;
                     """,
                    (user['username'],)
+                   )
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_users(cursor):
+    cursor.execute("""
+                    SELECT users.id, registration_time, username, email, role, 
+                    COUNT(question.user_id) AS "no_of_questions",
+                    COUNT(answer.user_id) AS "no_of_answers",
+                    COUNT(comment.user_id) AS "no_of_comments"
+                    FROM users
+                    LEFT JOIN question
+                    ON (users.id=question.user_id)
+                    LEFT JOIN answer
+                    ON (users.id=answer.user_id)
+                    LEFT JOIN comment
+                    ON (users.id=comment.user_id)
+                    GROUP BY users.id;
+                   """)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_id_from_answer_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT question.id
+                    FROM question
+                    INNER JOIN answer
+                    ON (question.id=answer.question_id)
+                    WHERE answer.id=%s;
+                    """,
+                   (answer_id,))
+    return cursor.fetchall()
+
+
+
+@database_common.connection_handler
+def get_userid_by_username(cursor, user_name):
+    cursor.execute("""
+                    SELECT id
+                    FROM users
+                    WHERE username = %s;
+                    """,
+                   (user_name,)
                    )
     return cursor.fetchall()
