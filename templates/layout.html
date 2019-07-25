@@ -50,10 +50,10 @@
                     <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 {% if session['user'] %}
-                    <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('logout') }}">Logout</a></button>
+                    <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('logout') }}" class="text-color">Logout</a></button>
                 {% else %}
-                    <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('registration') }}">Registration</a></button>
-                    <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('login') }}">Login</a></button>
+                    <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('registration') }}" class="text-color">Registration</a></button>
+                    <button class="btn btn-outline-warning my-2 my-sm-0"><a href="{{ url_for('login') }}" class="text-color">Login</a></button>
                 {% endif %}
 
             </nav>
