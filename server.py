@@ -13,8 +13,7 @@ def show_top_5_questions():
     LIMIT_NUMBER = 5
     user_questions = data_handler.get_limited_questions(LIMIT_NUMBER)
     if 'user' in session:
-        username = escape(session['user'])
-        return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER, username=username)
+        return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER)
     return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER)
 
 
@@ -56,14 +55,12 @@ def view_question(question_id=None):
         tags_ids.append(element['tag_id'])
     tags_names = [data_handler.get_question_tags(id_) for id_ in tags_ids]
     if 'user' in session:
-        username = escape(session['user'])
         return render_template('question.html',
                                user_question=user_question,
                                answers=answers,
                                question_comments=question_comments,
                                tags_names=tags_names,
-                               comments=comments,
-                               username=username
+                               comments=comments
                                )
 
     return render_template('question.html',
