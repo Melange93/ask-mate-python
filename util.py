@@ -27,7 +27,7 @@ def get_current_datetime():
     return current_datetime
 
 
-def add_question_wrapper():
+def add_question_wrapper(user_id):
     question = {
         'id': key_generator(),
         'submission_time': get_current_datetime(),
@@ -35,7 +35,8 @@ def add_question_wrapper():
         'vote_number': '0',
         'title': request.form.get('title'),
         'message': request.form.get('message'),
-        'image': None
+        'image': None,
+        'user_id': user_id
     }
     data_handler.add_new_question(question)
     question_id = question['id']

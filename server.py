@@ -26,8 +26,11 @@ def route_list():
 
 @app.route('/ask-question', methods=['GET', 'POST'])
 def add_question():
+    username = escape(session['user'])
+    user_id_raw = data_handler.get_userId_by_username(username)
+    user_id = user_id_raw[0]['id']
     if request.method == 'POST':
-        question_id = util.add_question_wrapper()
+        question_id = util.add_question_wrapper(user_id)
         return redirect(url_for('view_question', question_id=question_id))
 
     return render_template('add_edit_questions.html',

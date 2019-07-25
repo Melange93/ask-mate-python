@@ -121,7 +121,7 @@ def get_answer_data_by_id(cursor, id_):
 def add_new_question(cursor, question):
     cursor.execute("""
                     INSERT INTO question
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                     """,
                    (question['id'],
                     question['submission_time'],
@@ -129,7 +129,8 @@ def add_new_question(cursor, question):
                     question['vote_number'],
                     question['title'],
                     question['message'],
-                    question['image']
+                    question['image'],
+                    question['user_id']
                         )
                     )
 
@@ -406,6 +407,18 @@ def get_user_data(cursor, user):
                     WHERE username = %s;
                    """,
                    (user['username'],
+                        )
+                   )
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_userId_by_username(cursor, user):
+    cursor.execute("""
+                    SELECT id
+                    FROM users
+                    WHERE username = %s;
+                   """,
+                   (user,
                         )
                    )
     return cursor.fetchall()
