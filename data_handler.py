@@ -160,13 +160,15 @@ def get_limited_questions(cursor, limit_number):
 def add_new_answer(cursor, answer):
     cursor.execute("""
                     INSERT INTO answer
-                    VALUES (%s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
                     """,
                    (answer['id'],
                     answer['submission_time'],
                     answer['vote_number'],
                     answer['question_id'],
-                    answer['message']
+                    answer['message'],
+                    None,  #image data
+                    answer['user_id']
                         )
                     )
 
@@ -415,6 +417,17 @@ def get_user_data(cursor, user):
                    )
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def get_userId_by_username(cursor, user):
+    cursor.execute("""
+                    SELECT id
+                    FROM users
+                    WHERE username = %s;
+                   """,
+                   (user,)
+                   )
+    return cursor.fetchall()
 
 @database_common.connection_handler
 def get_password(cursor, user):
