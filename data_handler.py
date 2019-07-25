@@ -438,4 +438,17 @@ def get_all_users(cursor):
                     ON (users.id=comment.user_id)
                     GROUP BY users.id;
                    """)
-    return  cursor.fetchall()
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_id_from_answer_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT question.id
+                    FROM question
+                    INNER JOIN answer
+                    ON (question.id=answer.question_id)
+                    WHERE answer.id=%s;
+                    """,
+                   (answer_id,))
+    return cursor.fetchall()

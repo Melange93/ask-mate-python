@@ -221,7 +221,13 @@ def add_new_tag(question_id = None):
 def del_comment(comment_id):
     q_and_a_id = data_handler.get_q_and_a_id_from_comment(comment_id)
     data_handler.delete_comment(comment_id)
-    return redirect(url_for('view_question', question_id=q_and_a_id[0]['question_id']))
+    if q_and_a_id[0]['answer_id']:
+        answer_id = q_and_a_id[0]['answer_id']
+        question_id = data_handler.get_question_id_from_answer_id(answer_id)
+        question_id = question_id[0]['id']
+    else:
+        question_id = q_and_a_id[0]['question_id']
+    return redirect(url_for('view_question', question_id=question_id))
 
 
 @app.route('/answer/<answer_id>/delete', methods=['GET'])
