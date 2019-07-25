@@ -13,8 +13,8 @@ def show_top_5_questions():
     LIMIT_NUMBER = 5
     user_questions = data_handler.get_limited_questions(LIMIT_NUMBER)
     if 'user' in session:
-
-        return 'Logged in as %s' % escape(session['user'])
+        username = escape(session['user'])
+        return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER, username=username)
     return render_template('list.html', user_questions=user_questions, limit_number=LIMIT_NUMBER)
 
 
