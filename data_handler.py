@@ -260,7 +260,9 @@ def add_new_answer_comment(cursor, answer_comment):
 @database_common.connection_handler
 def get_comments_for_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM comment
+                    SELECT * 
+                    FROM comment
+                    JOIN users ON (user_id=users.id)
                     WHERE question_id = %s ORDER BY submission_time ASC;
                    """,
                    (question_id,)
