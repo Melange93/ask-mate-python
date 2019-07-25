@@ -30,7 +30,7 @@
             </thead>
                 {% for question in q_results %}
                     <tr>
-                        <td>{{ question.title }}</td>
+                        <td><a href="{{ url_for('view_question', question_id=question.id)}}">{{ question.title }}</a></td>
                         <td>{{ question.message }}</td>
                         <td>{{ question.submission_time }}</td>
                         <td>{{ question.view_number }}</td>

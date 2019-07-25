@@ -39,7 +39,6 @@ def add_question():
 @app.route('/question/<string:question_id>', methods=['GET'])
 def view_question(question_id=None):
     answers = data_handler.get_answer_data_by_id(question_id)
-    print(answers)
     user_question = data_handler.get_question_data_by_id(question_id)[0]
     answers_ids = []
     for answer in answers:
@@ -75,20 +74,14 @@ def view_question(question_id=None):
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id=None):
-    if session:
-        username = escape(session['user'])
-        user_id_raw = data_handler.get_userId_by_username(username)
-        user_id = user_id_raw[0]['id']
+    if request.method == 'POST':
+        util.add_answer_wrapper(question_id)
+        return redirect(url_for('view_question', question_id=question_id))
 
-        if request.method == 'POST':
-            answer_id = util.add_answer_wrapper(question_id, user_id)
-            return redirect(url_for('view_question', question_id=question_id, answer_id=answer_id))
-
-        return render_template('add_edit_answer.html',
-                               page_title='Add answer',
-                               button_title='Submit answer',
-                               question_id=question_id)
-    return redirect(url_for('route_list'))
+    return render_template('add_edit_answer.html',
+                           page_title='Add answer',
+                           button_title='Submit answer',
+                           question_id=question_id)
 
 
 @app.route('/question/<string:question_id>/edit', methods=['GET', 'POST'])
@@ -205,22 +198,26 @@ def new_question_comment(question_id=None):
 
 @app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
 def new_answer_comment(answer_id=None):
-    if request.method == 'POST':
-        answer_comment = {
-            'id': util.key_generator(),
-            'answer_id': answer_id,
-            'message': request.form.get('message'),
-            'submission_time': util.get_current_datetime(),
-            'edited_count': '0'
-             }
-        data_handler.add_new_answer_comment(answer_comment)
-        question_id = data_handler.get_answer_data_by_answer_id(answer_id)[0]
-        return redirect(url_for('view_question', question_id=question_id['question_id']))
+    if 'user' in session:
+        username = escape(session['user'])
+        get_user_id = data_handler.get_userid_by_username(str(username))
+        if request.method == 'POST':
+            answer_comment = {
+                'id': util.key_generator(),
+                'answer_id': answer_id,
+                'message': request.form.get('message'),
+                'submission_time': util.get_current_datetime(),
+                'edited_count': '0',
+                'user_id': get_user_id[0]['id']
+                 }
+            data_handler.add_new_answer_comment(answer_comment)
+            question_id = data_handler.get_answer_data_by_answer_id(answer_id)[0]
+            return redirect(url_for('view_question', question_id=question_id['question_id']))
 
-    return render_template('add_edit_question_answer_comments.html',
-                           page_title='Add comment to answer',
-                           button_title='Submit comment',
-                           answer_id=answer_id)
+        return render_template('add_edit_question_answer_comments.html',
+                            page_title='Add comment to answer',
+                            button_title='Submit comment',
+                            answer_id=answer_id)
 
 
 @app.route('/question/<question_id>/add_tag', methods=['POST', 'GET'])

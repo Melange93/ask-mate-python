@@ -108,8 +108,7 @@ def get_question_data_by_id(cursor, id_):
 @database_common.connection_handler
 def get_answer_data_by_id(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM answer AS a
-                    JOIN users AS u ON a.user_id=u.id
+                    SELECT * FROM answer
                     WHERE question_id = %s ORDER BY submission_time ASC;
                    """,
                    (id_,)
@@ -161,15 +160,13 @@ def get_limited_questions(cursor, limit_number):
 def add_new_answer(cursor, answer):
     cursor.execute("""
                     INSERT INTO answer
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s)
                     """,
                    (answer['id'],
                     answer['submission_time'],
                     answer['vote_number'],
                     answer['question_id'],
-                    answer['message'],
-                    None,  #image data
-                    answer['user_id']
+                    answer['message']
                         )
                     )
 
@@ -187,10 +184,8 @@ def edit_answer(cursor, answer):
 @database_common.connection_handler
 def get_answer_data_by_answer_id(cursor, answer_id):
     cursor.execute("""
-                    SELECT * 
-                    FROM answer
-                    JOIN users ON (user_id=users.id)
-                    WHERE answer.id = %s;
+                    SELECT * FROM answer
+                    WHERE id = %s;
                    """,
                    (answer_id,)
                    )
@@ -250,14 +245,15 @@ def add_new_question_comment(cursor, question_comment):
 @database_common.connection_handler
 def add_new_answer_comment(cursor, answer_comment):
     cursor.execute("""
-                    INSERT INTO comment (id, answer_id, message, submission_time, edited_count)
-                    VALUES (%s, %s, %s, %s, %s)
+                    INSERT INTO comment (id, answer_id, message, submission_time, edited_count, user_id)
+                    VALUES (%s, %s, %s, %s, %s, %s)
                     """,
                    (answer_comment['id'],
                     answer_comment['answer_id'],
                     answer_comment['message'],
                     answer_comment['submission_time'],
                     answer_comment['edited_count'],
+                    answer_comment['user_id'],
                         )
                     )
 
@@ -418,17 +414,6 @@ def get_user_data(cursor, user):
                    )
     return cursor.fetchall()
 
-
-@database_common.connection_handler
-def get_userId_by_username(cursor, user):
-    cursor.execute("""
-                    SELECT id
-                    FROM users
-                    WHERE username = %s;
-                   """,
-                   (user,)
-                   )
-    return cursor.fetchall()
 
 @database_common.connection_handler
 def get_password(cursor, user):

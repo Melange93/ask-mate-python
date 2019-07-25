@@ -17,9 +17,7 @@
             <th>Vote number</th>
             <th>Message</th>
             <th>Image</th>
-            {% if session['user'] %}
-                <th colspan="2">Vote</th>
-            {% endif %}
+            <th colspan="2">Vote</th>
         </tr>
     </thead>
 
@@ -30,22 +28,20 @@
         <td>{{ user_question.vote_number }}</td>
         <td>{{ user_question.message }}</td>
         <td>{{ user_question.image }}</td>
-        {% if session['user'] %}
-            <td>
-                 <form action="{{ url_for('vote_question', question_id=user_question.id, up="up")}}" method="post">
-                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👍</button>
-                 </form>
-            </td>
-            <td>
-                 <form action="{{ url_for('vote_question', question_id=user_question.id, down="down")}}" method="post">
-                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👎</button>
-                 </form>
-            </td>
-        {% endif %}
+        <td>
+             <form action="{{ url_for('vote_question', question_id=user_question.id, up="up")}}" method="post">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👍</button>
+             </form>
+        </td>
+        <td>
+             <form action="{{ url_for('vote_question', question_id=user_question.id, down="down")}}" method="post">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">👎</button>
+             </form>
+        </td>
     </tr>
     {% for question_comment in question_comments %}
         <tr class="comment">
-            {% if session['user'] == question_comment.username %}
+            {% if username == question_comment.username %}
                 <td colspan="6">
                     <span class="comment-header d-flex justify-content-start">Comment: </span>
                     <span class="comment-body">{{ question_comment.message }}</span>
@@ -85,19 +81,17 @@
     </tr>
 </table>
 <br>
-{% if session['user'] %}
+{% if username %}
     <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_question', question_id=user_question.id)}} ">Edit question</a>
     <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_question_comment', question_id=user_question.id)}} ">Add comment to question</a>
     <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('add_new_tag', question_id=user_question.id)}}">Add new tag</a>
  {% endif %}
 <br>
 <h2>Answer:</h2>
-{% if session['user'] %}
-    <p>
-        <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer', question_id=user_question.id) }}">
-            Add a new answer</a>
-    </p>
-{% endif %}
+<p>
+    <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer', question_id=user_question.id) }}">
+        Add a new answer</a>
+</p>
 <table class="center">
     <thead>
         <tr>
@@ -106,8 +100,8 @@
             <th>Vote number</th>
             <th>Image</th>
             <th colspan="2">Vote</th>
-            <th>Add</th>
             <th>Edit</th>
+            <th>Add</th>
             <th>Delete</th>
         </tr>
     </thead>
@@ -129,10 +123,10 @@
                  </form>
             </td>
             <td>
-                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer_comment', answer_id=answer.id)}}">Add comment</a>
-            </td>
-            <td>
                 <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_answer', answer_id=answer.id)}}">Edit answer</a>
+            </td>
+             <td>
+                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('new_answer_comment', answer_id=answer.id)}}">Add comment</a>
             </td>
             <td>
                 <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_answer', answer_id=answer.id)}}
@@ -143,21 +137,34 @@
         {% for comment_list in comments %}
             {% for comment in comment_list %}
                 {% if comment.answer_id == answer.id %}
-                    <tr class="comment">
-                        <td colspan="7">
-                            <span class="comment-header d-flex justify-content-start">Comment: </span>
-                            <span class="comment-body">{{ comment.message }}</span>
-                            <span class="comment-time d-flex justify-content-end">{{ comment.submission_time }}</span>
-                            <span class="comment-edited d-flex justify-content-end">Edited count: {{ comment.edited_count }}</span>
-                        </td>
-                        <td>
-                            <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_comment', question_id=user_question.id, comment_id=comment.id)}}">Edit</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_comment', comment_id=comment.id)}}
-                                "onclick="return confirm('Are you sure to delete this comment?')">Delete</a>
-                        </td>
-                    </tr>
+                    {% if session['user'] %}
+                        <tr class="comment">
+                            <td colspan="7">
+                                <span class="comment-header d-flex justify-content-start">Comment: </span>
+                                <span class="comment-body">{{ comment.message }}</span>
+                                <span class="comment-time d-flex justify-content-end">{{ comment.submission_time }}</span>
+                                <span class="comment-edited d-flex justify-content-end">Edited count: {{ comment.edited_count }}</span>
+                                <span class="comment-edited d-flex justify-content-end">Commit by: {{ comment.user_id }}</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('edit_comment', question_id=user_question.id, comment_id=comment.id)}}">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-warning my-2 my-sm-0" href="{{ url_for('del_comment', comment_id=comment.id)}}
+                                    "onclick="return confirm('Are you sure to delete this comment?')">Delete</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr class="comment">
+                            <td colspan="9">
+                                <span class="comment-header d-flex justify-content-start">Comment: </span>
+                                <span class="comment-body">{{ comment.message }}</span>
+                                <span class="comment-time d-flex justify-content-end">{{ comment.submission_time }}</span>
+                                <span class="comment-edited d-flex justify-content-end">Edited count: {{ comment.edited_count }}</span>
+                                <span class="comment-edited d-flex justify-content-end">Commit by: {{ comment.user_id }}</span>
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% endfor %}
