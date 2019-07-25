@@ -41,7 +41,7 @@
     </tr>
     {% for question_comment in question_comments %}
         <tr class="comment">
-            {% if username %}
+            {% if username == question_comment.username %}
                 <td colspan="6">
                     <span class="comment-header d-flex justify-content-start">Comment: </span>
                     <span class="comment-body">{{ question_comment.message }}</span>

@@ -46,9 +46,10 @@ def view_question(question_id=None):
         for key, value in answer.items():
             if key == 'id':
                 answers_ids.append(value)
-    comments = [data_handler.get_comments_for_answers(id_) for id_ in answers_ids]
 
+    comments = [data_handler.get_comments_for_answers(id_) for id_ in answers_ids]
     question_comments = data_handler.get_comments_for_question(question_id)
+
     question_tag = data_handler.get_tags(question_id)
     tags_ids = []
     for element in question_tag:
