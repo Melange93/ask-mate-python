@@ -184,8 +184,10 @@ def edit_answer(cursor, answer):
 @database_common.connection_handler
 def get_answer_data_by_answer_id(cursor, answer_id):
     cursor.execute("""
-                    SELECT * FROM answer
-                    WHERE id = %s;
+                    SELECT * 
+                    FROM answer
+                    JOIN users ON (user_id=users.id)
+                    WHERE answer.id = %s;
                    """,
                    (answer_id,)
                    )
