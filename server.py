@@ -318,8 +318,8 @@ def list_all_users():
 
 @app.route('/user/<int:user_id>')
 def user_page(user_id):
-    #if not session or session['user'] != "admin":
-     #   return redirect(url_for('route_list'))
+    if not session or session['user'] != "admin":
+        return redirect(url_for('route_list'))
     users_questions = data_handler.get_users_questions(user_id)
     users_answers = data_handler.get_users_answers_and_question_title(user_id)
     users_comments = data_handler.get_users_comments_and_question_title(user_id)
