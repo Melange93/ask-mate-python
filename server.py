@@ -39,7 +39,8 @@ def add_question():
 
 @app.route('/question/<string:question_id>', methods=['GET'])
 def view_question(question_id=None):
-    answers = data_handler.get_answer_data_by_id(question_id)
+    answers = data_handler.get_answer_data_comments_by_id(question_id)
+    answers1 = data_handler.get_answer_data_by_id(question_id)
     user_question = data_handler.get_question_data_by_id(question_id)[0]
     answers_ids = []
     for answer in answers:
@@ -60,6 +61,7 @@ def view_question(question_id=None):
                            question_comments=question_comments,
                            tags_names=tags_names,
                            comments=comments,
+                           answers1=answers1
                            )
 
 

@@ -106,10 +106,23 @@ def get_question_data_by_id(cursor, id_):
 
 
 @database_common.connection_handler
-def get_answer_data_by_id(cursor, id_):
+def get_answer_data_comments_by_id(cursor, id_):
     cursor.execute("""
                     SELECT * FROM answer
                     WHERE question_id = %s ORDER BY submission_time ASC;
+                   """,
+                   (id_,)
+                   )
+    answer_data = cursor.fetchall()
+    return answer_data
+
+
+@database_common.connection_handler
+def get_answer_data_by_id(cursor, id_):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    JOIN users ON (answer.user_id = users.id)
+                    WHERE answer.question_id = %s ORDER BY submission_time ASC;
                    """,
                    (id_,)
                    )
